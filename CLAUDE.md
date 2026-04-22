@@ -11,7 +11,7 @@
 
 **Type:** Terminal-Based Console Application
 
-**Output File:** main.cpp (single file, no splitting)
+**Output File:** main.cpp (imports utility files using #include)
 
 **Compiler Command:** `g++ main.cpp -o airline`
 
@@ -38,10 +38,13 @@ Claude must follow every rule below — no exceptions.
 - All collections must use plain C++ arrays of fixed size
 - Example: `Seat seats[50]` not `vector<Seat> seats`
 
-### RULE 3 — SINGLE FILE ONLY
-- The entire project must live in one file: `main.cpp`
-- No header files (.h), no separate source files (.cpp)
-- No splitting of classes into multiple files
+### RULE 3 — ORGANIZED FILE STRUCTURE
+- Never write all code directly in `main.cpp`
+- Create separate utility files for different components and import them into main
+- Use `#include "filename.cpp"` to import utility files into main.cpp
+- Organize code into logical utility files (e.g., classes.cpp, helpers.cpp, menu.cpp)
+- The main.cpp file should only contain the main() function and necessary includes
+- Keep the project structure clean and modular while avoiding unnecessary file creation
 
 ### RULE 4 — COMMENT EVERY LINE
 - Every single line of code must have a comment explaining what it does
@@ -82,6 +85,13 @@ Claude must follow every rule below — no exceptions.
 - All menus must be centered and clearly labeled
 - All ticket output must be inside a box made of `|` and `-` characters
 - Leave blank lines between sections for readability
+
+### RULE 11 — AVOID UNNECESSARY FILES
+- Only create files that are absolutely essential for the project
+- Do not create extra documentation files, notes, or temporary files unless explicitly requested
+- Do not create backup files or duplicate versions
+- Keep the project directory clean with only necessary source files and the README.md
+- Every file created must serve a clear, specific purpose in the project
 
 ---
 
@@ -224,18 +234,24 @@ Exact structure Claude must follow.
 
 Step-by-step build order Claude must follow in exact order:
 
-1. Write all constants at the top (`MAX_FLIGHTS`, `MAX_SEATS`, `MAX_BOOKINGS`)
-2. Write the `Seat` class completely with all comments
-3. Write the `Passenger` class completely with both constructors and all comments
-4. Write the `Booking` class with static counter and all comments
-5. Write the `Ticket` class with formatted box print method and all comments
-6. Write the `Flight` class with object arrays and all methods and all comments
-7. Write the `Airline` class with all methods and all comments
-8. Write the static member initialization: `int Booking::pnrCounter = 0;`
-9. Write all standalone helper functions for the menu
-10. Write the `main()` function with the looping menu
+1. Write all constants at the top in a separate utility file (`constants.cpp`)
+2. Write the `Seat` class completely with all comments in `classes.cpp`
+3. Write the `Passenger` class completely with both constructors and all comments in `classes.cpp`
+4. Write the `Booking` class with static counter and all comments in `classes.cpp`
+5. Write the `Ticket` class with formatted box print method and all comments in `classes.cpp`
+6. Write the `Flight` class with object arrays and all methods and all comments in `classes.cpp`
+7. Write the `Airline` class with all methods and all comments in `classes.cpp`
+8. Write the static member initialization: `int Booking::pnrCounter = 0;` in `classes.cpp`
+9. Write all standalone helper functions for the menu in `helpers.cpp`
+10. Write the `main()` function in `main.cpp` with proper includes and the looping menu
 11. Call `loadSampleData()` at the very start of `main()`
 12. Test all features mentally by tracing through the code once
+
+**File Organization:**
+- `constants.cpp` — all constant definitions
+- `classes.cpp` — all 6 class definitions and implementations
+- `helpers.cpp` — all helper functions for menu operations
+- `main.cpp` — includes the above files and contains only the main() function
 
 ---
 
@@ -374,6 +390,9 @@ Must all be true before project is complete:
 - [ ] Passenger manifest shows correct data per flight
 - [ ] Sample data loads automatically on startup
 - [ ] Program handles invalid menu input without crashing
+- [ ] Code is organized into proper utility files (constants.cpp, classes.cpp, helpers.cpp, main.cpp)
+- [ ] main.cpp only contains the main() function and necessary includes
+- [ ] No unnecessary files exist in the project directory
 - [ ] Code compiles cleanly with: `g++ main.cpp -o airline`
 - [ ] Program runs correctly with: `./airline`
 
