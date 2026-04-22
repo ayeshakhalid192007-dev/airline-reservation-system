@@ -1,0 +1,103 @@
+==========================================
+USER HIERARCHY POLYMORPHISM TEST RESULTS
+==========================================
+Date: 2026-04-22
+Test File: src/test_user_hierarchy.cpp
+Compiled Binary: bin/test_user_hierarchy
+
+COMPILATION STATUS: SUCCESS
+Compiler Command: g++ -std=c++11 src/test_user_hierarchy.cpp src/domain/User.cpp src/domain/Admin.cpp src/domain/Customer.cpp src/domain/Booking.cpp src/domain/Passenger.cpp -o bin/test_user_hierarchy -I src/domain
+
+EXECUTION STATUS: SUCCESS
+All 8 tests passed successfully.
+
+==========================================
+TEST SUMMARY
+==========================================
+
+TEST 1: Admin Object Creation - PASSED
+- Admin object created with all parameters
+- displayInfo() correctly shows Admin-specific information
+
+TEST 2: Customer Object Creation - PASSED
+- Customer object created with all parameters
+- displayInfo() correctly shows Customer-specific information
+- Initial loyalty points: 0, Tier: Bronze
+
+TEST 3: Polymorphism with Base Class Pointers - PASSED
+- User* pointer to Admin object calls Admin::displayInfo()
+- User* pointer to Customer object calls Customer::displayInfo()
+- Virtual method dispatch working correctly
+
+TEST 4: Login Method Polymorphism - PASSED
+- Admin login through User* pointer successful
+- Customer login through User* pointer successful
+- Both derived class login methods called correctly
+
+TEST 5: Admin-Specific Methods - PASSED
+- getAdminLevel() returns "Super"
+- getDepartment() returns "Operations"
+- manageFlights() executed successfully
+- manageUsers() executed successfully
+- viewReports() executed successfully
+
+TEST 6: Customer-Specific Methods - PASSED
+- Initial loyalty points: 0
+- Added 500 points successfully
+- Final loyalty points: 500
+- updateMembershipTier() executed successfully
+
+TEST 7: Array of Base Class Pointers - PASSED
+- Array of User* pointers holds both Admin and Customer objects
+- Iteration through array calls correct derived class methods
+- Advanced polymorphism demonstration successful
+
+TEST 8: Login Validation - PASSED
+- Wrong password correctly rejected
+- Input validation working as expected
+
+==========================================
+POLYMORPHISM VERIFICATION
+==========================================
+
+✓ Virtual methods (displayInfo, login) called correctly through base pointers
+✓ Correct derived class methods executed (not base class versions)
+✓ Admin-specific methods accessible through Admin objects
+✓ Customer-specific methods accessible through Customer objects
+✓ Inheritance hierarchy working as expected
+✓ No memory leaks or runtime errors
+
+==========================================
+OOP CONCEPTS DEMONSTRATED
+==========================================
+
+1. INHERITANCE
+   - Admin inherits from User (IS-A relationship)
+   - Customer inherits from User (IS-A relationship)
+   - Protected members accessible in derived classes
+
+2. POLYMORPHISM
+   - Virtual methods in base class (User)
+   - Overridden methods in derived classes (Admin, Customer)
+   - Base class pointers calling derived class methods
+   - Runtime polymorphism working correctly
+
+3. ENCAPSULATION
+   - Private members in all classes
+   - Public getter/setter methods
+   - Data hiding enforced
+
+4. VIRTUAL DESTRUCTOR
+   - Proper cleanup in inheritance hierarchy
+   - No memory leaks
+
+==========================================
+CONCLUSION
+==========================================
+
+The User inheritance hierarchy is fully functional and demonstrates
+proper implementation of inheritance and polymorphism in C++.
+All virtual methods work correctly, and derived class-specific
+functionality is accessible as expected.
+
+Task 10 Status: COMPLETED SUCCESSFULLY
