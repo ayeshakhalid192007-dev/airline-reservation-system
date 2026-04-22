@@ -423,7 +423,5 @@ For questions or issues:
 
 ---
 
-**Happy Learning! 🚀**
-
 *Last Updated: April 23, 2026*  
 *Version: 1.1.0*
