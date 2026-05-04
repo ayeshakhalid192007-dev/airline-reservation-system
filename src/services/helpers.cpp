@@ -41,13 +41,13 @@ void clearInputBuffer()
  */
 void viewAllFlights(Airline& airline)
 {
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
     cout << "         ALL AVAILABLE FLIGHTS" << endl; // print section title
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 
     airline.displayAllFlights(); // call airline method to display all flights
 
-    cout << "========================================\n" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 }
 
 /*
@@ -68,13 +68,13 @@ void searchFlightsByRoute(Airline& airline)
     cout << "Enter destination city: "; // prompt for destination
     getline(cin, destination); // read full line including spaces
 
-    cout << "\n========================================" << endl; // print separator
+    cout << "\n==========================================" << endl; // print separator
     cout << "         SEARCH RESULTS" << endl; // print section title
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 
     airline.searchFlights(origin, destination); // call airline method to search flights
 
-    cout << "========================================\n" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 }
 
 /*
@@ -235,9 +235,9 @@ void bookSeat(Airline& airline)
             {
                 cout << "\nPayment successful!" << endl; // show success message
 
-                cout << "\n========================================" << endl; // print separator
+                cout << "\n==========================================" << endl; // print separator
                 cout << "         BOOKING IN PROGRESS" << endl; // print section title
-                cout << "========================================" << endl; // print separator
+                cout << "==========================================" << endl; // print separator
 
                 Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
 
@@ -298,9 +298,9 @@ void cancelBooking(Airline& airline)
     cout << "Enter PNR number: "; // prompt for PNR number
     getline(cin, pnr); // read PNR number
 
-    cout << "\n========================================" << endl; // print separator
+    cout << "\n==========================================" << endl; // print separator
     cout << "         CANCELLATION IN PROGRESS" << endl; // print section title
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 
     cout << "\nPlease provide the flight number for this booking." << endl; // ask for flight number
 
@@ -346,55 +346,61 @@ void viewBookingDetails(Airline& airline)
     cout << "Enter PNR number: "; // prompt for PNR number
     getline(cin, pnr); // read PNR number
 
-    cout << "\n========================================" << endl; // print separator
+    cout << "\n==========================================" << endl; // print separator
     cout << "         BOOKING DETAILS" << endl; // print section title
-    cout << "========================================" << endl; // print separator
-
-    cout << "\nPlease provide the flight number for this booking." << endl; // ask for flight number
-
-    string flightNumber = ""; // stores flight number
-    cout << "Enter flight number: "; // prompt for flight number
-    getline(cin, flightNumber); // read flight number
-
-    int flightIndex = airline.findFlight(flightNumber); // find flight in airline
-
-    if (flightIndex == -1) // check if flight not found
-    {
-        cout << "\nError: Flight not found!\n" << endl; // show error message
-        return; // exit function
-    }
-
-    Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
+    cout << "==========================================" << endl; // print separator
 
     bool bookingFound = false; // flag to track if booking is found
-    int bookingIndex = 0; // stores index of found booking
+    int foundFlightIndex = -1; // stores index of flight containing the booking
+    int foundBookingIndex = -1; // stores index of found booking
 
-    int i = 0; // initialize loop counter
-    while (i < 50) // loop through maximum possible bookings
+    int flightIdx = 0; // initialize flight loop counter
+    while (flightIdx < airline.getFlightCount()) // loop through all flights
     {
-        Booking currentBooking = flightPtr->bookings[i]; // get booking at current index
-        string currentPnr = currentBooking.getPnr(); // get PNR of current booking
-        string status = currentBooking.getStatus(); // get booking status
+        Flight* flightPtr = &airline.flights[flightIdx]; // get pointer to current flight
 
-        bool pnrMatches = (currentPnr == pnr); // check if PNR matches
-        bool isActive = (status != "Cancelled"); // check if booking is active
-
-        if (pnrMatches && isActive) // if PNR matches and booking is active
+        if (flightPtr->bookings == nullptr) // check if bookings array is not allocated
         {
-            bookingFound = true; // set flag to true
-            bookingIndex = i; // store the index
-            break; // exit loop
+            flightIdx = flightIdx + 1; // move to next flight
+            continue; // skip to next iteration
         }
 
-        i = i + 1; // increment counter
+        int bookingIdx = 0; // initialize booking loop counter
+        while (bookingIdx < 50) // loop through maximum possible bookings
+        {
+            Booking currentBooking = flightPtr->bookings[bookingIdx]; // get booking at current index
+            string currentPnr = currentBooking.getPnr(); // get PNR of current booking
+            string status = currentBooking.getStatus(); // get booking status
+
+            bool pnrMatches = (currentPnr == pnr); // check if PNR matches
+            bool isActive = (status != "Cancelled"); // check if booking is active
+
+            if (pnrMatches && isActive) // if PNR matches and booking is active
+            {
+                bookingFound = true; // set flag to true
+                foundFlightIndex = flightIdx; // store the flight index
+                foundBookingIndex = bookingIdx; // store the booking index
+                break; // exit booking loop
+            }
+
+            bookingIdx = bookingIdx + 1; // increment booking counter
+        }
+
+        if (bookingFound) // if booking found, no need to check other flights
+        {
+            break; // exit flight loop
+        }
+
+        flightIdx = flightIdx + 1; // increment flight counter
     }
 
     if (bookingFound) // check if booking was found
     {
-        Booking foundBooking = flightPtr->bookings[bookingIndex]; // get the found booking
+        Flight* flightPtr = &airline.flights[foundFlightIndex]; // get pointer to the flight
+        Booking foundBooking = flightPtr->bookings[foundBookingIndex]; // get the found booking
         Passenger passenger = foundBooking.getPassenger(); // get passenger details
 
-        cout << "\n+------------------------------------------+" << endl; // print ticket top border
+        cout << "+------------------------------------------+" << endl; // print ticket top border
         cout << "|          BOARDING PASS / TICKET          |" << endl; // print ticket header
         cout << "+------------------------------------------+" << endl; // print separator
         cout << "|  PNR Number   : " << foundBooking.getPnr() << "                  |" << endl; // print PNR
@@ -412,7 +418,7 @@ void viewBookingDetails(Airline& airline)
     }
     else // booking not found
     {
-        cout << "\nError: Booking not found with PNR: " << pnr << "\n" << endl; // show error message
+        cout << "Error: Booking not found with PNR: " << pnr << "\n" << endl; // show error message
     }
 }
 
@@ -438,9 +444,9 @@ void displayFlightManifest(Airline& airline)
         return; // exit function
     }
 
-    cout << "\n========================================" << endl; // print separator
+    cout << "\n==========================================" << endl; // print separator
     cout << "         PASSENGER MANIFEST" << endl; // print section title
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 
     Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
 
@@ -453,9 +459,9 @@ void displayFlightManifest(Airline& airline)
  */
 void testUserHierarchy()
 {
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
     cout << "      USER HIERARCHY DEMONSTRATION" << endl; // print section title
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
     cout << "Demonstrating Polymorphism with User Base Class\n" << endl; // print description
 
     Admin admin("A001", "admin123", "admin@123", "admin@airline.com", "John Admin", "0300-1234567", "Super Admin", "Operations"); // create admin object
@@ -495,9 +501,9 @@ void testUserHierarchy()
         cout << "Customer login: FAILED" << endl; // show failure
     }
 
-    cout << "\n========================================" << endl; // print separator
+    cout << "\n==========================================" << endl; // print separator
     cout << "Polymorphism demonstrated successfully!" << endl; // print success message
-    cout << "========================================\n" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 }
 
 /*
@@ -506,9 +512,9 @@ void testUserHierarchy()
  */
 void testPaymentMethods()
 {
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
     cout << "     PAYMENT METHODS DEMONSTRATION" << endl; // print section title
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
     cout << "Demonstrating Polymorphism with Payment Base Class\n" << endl; // print description
 
     CreditCardPayment creditCard("PAY-CC-001", 15000.0, "2026-04-23", "pending", "1234-5678-9012-3456", "Ali Ahmed", "12/28", "123"); // create credit card payment
@@ -586,9 +592,9 @@ void testPaymentMethods()
     }
     cout << endl; // blank line
 
-    cout << "========================================" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
     cout << "Polymorphism demonstrated successfully!" << endl; // print success message
-    cout << "========================================\n" << endl; // print separator
+    cout << "==========================================" << endl; // print separator
 }
 
 #endif // end of header guard

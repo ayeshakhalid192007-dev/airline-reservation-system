@@ -44,9 +44,9 @@ int main()
     int choice = 0; // stores user menu choice
     bool running = true; // flag to control main loop
 
-    cout << "\n========================================" << endl; // print separator line
+    cout << "\n==========================================" << endl; // print separator line
     cout << "  WELCOME TO AIRLINE RESERVATION SYSTEM" << endl; // print welcome message
-    cout << "========================================\n" << endl; // print separator line
+    cout << "==========================================" << endl; // print separator line
 
     while (running) // main program loop - continues until user exits
     {
@@ -100,9 +100,9 @@ int main()
 
             case 0: // option to exit program
                 running = false; // set flag to false to exit loop
-                cout << "========================================" << endl; // print separator
+                cout << "==========================================" << endl; // print separator
                 cout << "  Thank you for using our system!" << endl; // print goodbye message
-                cout << "========================================\n" << endl; // print separator
+                cout << "==========================================" << endl; // print separator
                 break; // exit switch statement
 
             default: // handle invalid menu choice

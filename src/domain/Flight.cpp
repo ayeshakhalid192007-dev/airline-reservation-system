@@ -178,7 +178,17 @@ void Flight::initializeSeats(int count)
     {
         delete[] seats; // deallocate old array first
     }
+
+    totalSeats = count; // set total seats to the provided count
+    availableSeats = count; // set available seats equal to total seats initially
+
     seats = new Seat[maxSeats]; // allocate new dynamic array for seats
+
+    if (bookings == nullptr) // check if bookings array not yet allocated
+    {
+        bookings = new Booking[maxBookings]; // allocate bookings array
+    }
+
     int seatIndex = 0; // initialize seat index counter to zero
     for (seatIndex = 0; seatIndex < count; seatIndex = seatIndex + 1) // loop through each seat position
     {
@@ -261,24 +271,24 @@ int Flight::findAvailableSeat(string seatClass)
 // Method to display flight summary information
 void Flight::displayFlight()
 {
-    cout << "==========================================\n"; // print separator line
-    cout << "Flight Number: " << flightNumber << "\n"; // print flight number
-    cout << "Route: " << origin << " -> " << destination << "\n"; // print route
-    cout << "Date: " << departureDate << "\n"; // print departure date
-    cout << "Departure: " << departureTime << " | Arrival: " << arrivalTime << "\n"; // print times
-    cout << "Total Seats: " << totalSeats << " | Available: " << availableSeats << "\n"; // print seat counts
-    cout << "==========================================\n"; // print separator line
+    cout << "==========================================" << endl; // print separator line
+    cout << "Flight Number: " << flightNumber << endl; // print flight number
+    cout << "Route: " << origin << " -> " << destination << endl; // print route
+    cout << "Date: " << departureDate << endl; // print departure date
+    cout << "Departure: " << departureTime << " | Arrival: " << arrivalTime << endl; // print times
+    cout << "Total Seats: " << totalSeats << " | Available: " << availableSeats << endl; // print seat counts
+    cout << "==========================================" << endl; // print separator line
 }
 
 // Method to display all bookings on this flight
 void Flight::displayManifest()
 {
-    cout << "==========================================\n"; // print separator line
-    cout << "PASSENGER MANIFEST - Flight " << flightNumber << "\n"; // print header
-    cout << "==========================================\n"; // print separator line
+    cout << "==========================================" << endl; // print separator line
+    cout << "PASSENGER MANIFEST - Flight " << flightNumber << endl; // print header
+    cout << "==========================================" << endl; // print separator line
     if (bookingCount == 0) // check if there are no bookings
     {
-        cout << "No bookings found for this flight.\n"; // print no bookings message
+        cout << "No bookings found for this flight." << endl; // print no bookings message
     }
     else // if there are bookings
     {
@@ -295,11 +305,11 @@ void Flight::displayManifest()
                 cout << "Name: " << p.getName(); // print passenger name
                 cout << " | Seat: " << bookings[i].getSeatNumber(); // print seat number
                 cout << " | Class: " << bookings[i].getSeatClass(); // print seat class
-                cout << " | PNR: " << bookings[i].getPnr() << "\n"; // print PNR number
+                cout << " | PNR: " << bookings[i].getPnr() << endl; // print PNR number
             }
         }
     }
-    cout << "==========================================\n"; // print separator line
+    cout << "==========================================" << endl; // print separator line
 }
 
 // Getter method - returns flight number

@@ -74,9 +74,9 @@ int Airline::findFlight(string flightNumber) // finds flight index by flight num
 
 void Airline::searchFlights(string origin, string destination) // searches flights by route
 {
-    cout << "===========================================" << endl; // displays separator line
+    cout << "==========================================" << endl; // displays separator line
     cout << "  SEARCH RESULTS: " << origin << " to " << destination << endl; // displays search header
-    cout << "===========================================" << endl; // displays separator line
+    cout << "==========================================" << endl; // displays separator line
 
     int foundCount = 0; // initializes counter for found flights
     int i = 0; // initializes loop counter to zero
@@ -103,14 +103,14 @@ void Airline::searchFlights(string origin, string destination) // searches fligh
         cout << "No flights found for this route." << endl; // displays no results message
     }
 
-    cout << "===========================================" << endl; // displays separator line
+    cout << "==========================================" << endl; // displays separator line
 }
 
 void Airline::displayAllFlights() // displays all flights in the airline
 {
-    cout << "===========================================" << endl; // displays separator line
+    cout << "==========================================" << endl; // displays separator line
     cout << "  ALL FLIGHTS - " << airlineName << " (" << airlineCode << ")" << endl; // displays airline header
-    cout << "===========================================" << endl; // displays separator line
+    cout << "==========================================" << endl; // displays separator line
 
     if (flightCount == 0) // checks if no flights exist
     {
@@ -128,7 +128,7 @@ void Airline::displayAllFlights() // displays all flights in the airline
         }
     }
 
-    cout << "===========================================" << endl; // displays separator line
+    cout << "==========================================" << endl; // displays separator line
 }
 
 void Airline::loadSampleData() // loads pre-defined sample flights
