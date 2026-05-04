@@ -13,6 +13,8 @@
 
 using namespace std; // use standard namespace
 
+class Airline; // forward declaration of Airline class
+
 /*
  * Class: Flight
  * Purpose: Represents a flight with seats and bookings
@@ -36,6 +38,8 @@ private: // private section - data hidden from outside
     Booking* bookings; // dynamic array pointer for Booking objects (composition)
     int bookingCount; // current number of bookings made
     int maxBookings; // maximum capacity of bookings array
+
+    friend void viewBookingDetails(Airline& airline); // friend function to access bookings array
 
 public: // public section - interface accessible from outside
     Flight(); // default constructor declaration

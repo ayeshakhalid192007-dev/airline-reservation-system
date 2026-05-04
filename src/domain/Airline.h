@@ -15,6 +15,11 @@ private: // private section - data members hidden from outside access
     int maxFlights; // stores maximum capacity of flights array
     int flightCount; // stores current number of flights in the array
 
+    friend void bookSeat(Airline& airline); // friend function to access flights array for booking
+    friend void cancelBooking(Airline& airline); // friend function to access flights array for cancellation
+    friend void viewBookingDetails(Airline& airline); // friend function to access flights array for viewing
+    friend void displayFlightManifest(Airline& airline); // friend function to access flights array for manifest
+
 public: // public section - methods accessible from outside
     Airline(string name, string code); // constructor with airline name and code parameters
     ~Airline(); // destructor to free dynamically allocated memory

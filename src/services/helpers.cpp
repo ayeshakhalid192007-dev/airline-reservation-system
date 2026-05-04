@@ -239,11 +239,35 @@ void bookSeat(Airline& airline)
                 cout << "         BOOKING IN PROGRESS" << endl; // print section title
                 cout << "========================================" << endl; // print separator
 
-                Booking newBooking(newPassenger, flightNumber, 0, seatClass, amount); // create booking object with seat 0 (will be assigned)
+                Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
 
-                cout << "\nBooking created successfully!" << endl; // show success message
-                cout << "PNR Number: " << newBooking.getPnr() << endl; // display PNR number
-                cout << "Please save this PNR for future reference.\n" << endl; // remind user to save PNR
+                int seatNumber = flightPtr->findAvailableSeat(seatClass); // find available seat of requested class
+
+                if (seatNumber == -1) // check if no seat available
+                {
+                    cout << "\nError: No available seats in " << seatClass << " class!\n" << endl; // show error
+                    delete payment; // free payment object
+                    payment = nullptr; // set pointer to null
+                    return; // exit function
+                }
+
+                Booking newBooking(newPassenger, flightNumber, seatNumber, seatClass, amount); // create booking object with assigned seat
+
+                bool bookingAdded = flightPtr->addBooking(newBooking); // add booking to flight
+
+                if (bookingAdded) // check if booking was added successfully
+                {
+                    cout << "\nBooking created successfully!" << endl; // show success message
+                    cout << "PNR Number: " << newBooking.getPnr() << endl; // display PNR number
+                    cout << "Seat Number: " << seatNumber << endl; // display seat number
+                    cout << "Seat Class: " << seatClass << endl; // display seat class
+                    cout << "Amount Paid: Rs. " << amount << endl; // display amount
+                    cout << "Please save this PNR for future reference.\n" << endl; // remind user to save PNR
+                }
+                else // booking failed to add
+                {
+                    cout << "\nError: Failed to add booking to flight!\n" << endl; // show error
+                }
             }
             else // payment processing failed
             {
@@ -278,8 +302,7 @@ void cancelBooking(Airline& airline)
     cout << "         CANCELLATION IN PROGRESS" << endl; // print section title
     cout << "========================================" << endl; // print separator
 
-    cout << "\nNote: Cancellation feature requires flight number." << endl; // show note
-    cout << "Please provide the flight number for this booking." << endl; // ask for flight number
+    cout << "\nPlease provide the flight number for this booking." << endl; // ask for flight number
 
     string flightNumber = ""; // stores flight number
     cout << "Enter flight number: "; // prompt for flight number
@@ -293,8 +316,20 @@ void cancelBooking(Airline& airline)
         return; // exit function
     }
 
-    cout << "\nCancellation request submitted for PNR: " << pnr << endl; // show confirmation
-    cout << "Note: Full cancellation functionality requires integration with Flight class.\n" << endl; // show note
+    Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
+
+    bool cancelled = flightPtr->cancelBooking(pnr); // attempt to cancel booking
+
+    if (cancelled) // check if cancellation successful
+    {
+        cout << "\nBooking cancelled successfully!" << endl; // show success message
+        cout << "PNR: " << pnr << endl; // display PNR
+        cout << "Seat has been released and is now available.\n" << endl; // show seat released message
+    }
+    else // cancellation failed
+    {
+        cout << "\nError: Booking not found with PNR: " << pnr << "\n" << endl; // show error message
+    }
 }
 
 /*
@@ -315,8 +350,7 @@ void viewBookingDetails(Airline& airline)
     cout << "         BOOKING DETAILS" << endl; // print section title
     cout << "========================================" << endl; // print separator
 
-    cout << "\nNote: Viewing booking details requires flight number." << endl; // show note
-    cout << "Please provide the flight number for this booking." << endl; // ask for flight number
+    cout << "\nPlease provide the flight number for this booking." << endl; // ask for flight number
 
     string flightNumber = ""; // stores flight number
     cout << "Enter flight number: "; // prompt for flight number
@@ -330,8 +364,56 @@ void viewBookingDetails(Airline& airline)
         return; // exit function
     }
 
-    cout << "\nSearching for booking with PNR: " << pnr << endl; // show search message
-    cout << "Note: Full booking retrieval requires integration with Flight class.\n" << endl; // show note
+    Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
+
+    bool bookingFound = false; // flag to track if booking is found
+    int bookingIndex = 0; // stores index of found booking
+
+    int i = 0; // initialize loop counter
+    while (i < 50) // loop through maximum possible bookings
+    {
+        Booking currentBooking = flightPtr->bookings[i]; // get booking at current index
+        string currentPnr = currentBooking.getPnr(); // get PNR of current booking
+        string status = currentBooking.getStatus(); // get booking status
+
+        bool pnrMatches = (currentPnr == pnr); // check if PNR matches
+        bool isActive = (status != "Cancelled"); // check if booking is active
+
+        if (pnrMatches && isActive) // if PNR matches and booking is active
+        {
+            bookingFound = true; // set flag to true
+            bookingIndex = i; // store the index
+            break; // exit loop
+        }
+
+        i = i + 1; // increment counter
+    }
+
+    if (bookingFound) // check if booking was found
+    {
+        Booking foundBooking = flightPtr->bookings[bookingIndex]; // get the found booking
+        Passenger passenger = foundBooking.getPassenger(); // get passenger details
+
+        cout << "\n+------------------------------------------+" << endl; // print ticket top border
+        cout << "|          BOARDING PASS / TICKET          |" << endl; // print ticket header
+        cout << "+------------------------------------------+" << endl; // print separator
+        cout << "|  PNR Number   : " << foundBooking.getPnr() << "                  |" << endl; // print PNR
+        cout << "|  Passenger    : " << passenger.getName() << "             |" << endl; // print passenger name
+        cout << "|  Flight       : " << foundBooking.getFlightNumber() << "                   |" << endl; // print flight number
+        cout << "|  From         : " << flightPtr->getOrigin() << "                   |" << endl; // print origin
+        cout << "|  To           : " << flightPtr->getDestination() << "                  |" << endl; // print destination
+        cout << "|  Date         : " << flightPtr->getDepartureDate() << "               |" << endl; // print date
+        cout << "|  Seat Number  : " << foundBooking.getSeatNumber() << "                        |" << endl; // print seat number
+        cout << "|  Seat Class   : " << foundBooking.getSeatClass() << "                  |" << endl; // print seat class
+        cout << "|  Amount Paid  : Rs. " << foundBooking.getAmountPaid() << "              |" << endl; // print amount
+        cout << "+------------------------------------------+" << endl; // print separator
+        cout << "|         HAVE A PLEASANT JOURNEY          |" << endl; // print footer message
+        cout << "+------------------------------------------+\n" << endl; // print ticket bottom border
+    }
+    else // booking not found
+    {
+        cout << "\nError: Booking not found with PNR: " << pnr << "\n" << endl; // show error message
+    }
 }
 
 /*
@@ -360,7 +442,9 @@ void displayFlightManifest(Airline& airline)
     cout << "         PASSENGER MANIFEST" << endl; // print section title
     cout << "========================================" << endl; // print separator
 
-    cout << "\nNote: Manifest display requires Flight class integration.\n" << endl; // show note
+    Flight* flightPtr = &airline.flights[flightIndex]; // get pointer to the flight object
+
+    flightPtr->displayManifest(); // call flight method to display manifest
 }
 
 /*
