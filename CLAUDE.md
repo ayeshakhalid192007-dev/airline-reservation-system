@@ -1,25 +1,21 @@
-# CLAUDE.md — Airline Reservation System
+# CLAUDE.md — C++ OOP Project Guidelines
 # Master Instruction File for Claude CLI
 
 ---
 
-## SECTION 1: PROJECT IDENTITY
-
-**Project Name:** Airline Reservation System
+## SECTION 1: LANGUAGE AND CODING STANDARDS
 
 **Language:** C++ (Pure, Standard Only)
 
 **Type:** Terminal-Based Console Application
 
-**Output File:** main.cpp (imports utility files using #include)
+**Compiler Command:** `g++ main.cpp -o <program_name>`
 
-**Compiler Command:** `g++ main.cpp -o airline`
-
-**Run Command:** `./airline`
+**Run Command:** `./<program_name>`
 
 **Difficulty Level:** Intermediate OOP (beginner-friendly syntax)
 
-**Purpose:** Learn and demonstrate core OOP concepts through a real-world system
+**Purpose:** Learn and demonstrate core OOP concepts through practical projects
 
 ---
 
@@ -32,31 +28,38 @@ Claude must follow every rule below — no exceptions.
 - Only these headers are allowed: `#include <iostream>`, `#include <string>`, `#include <cstring>`
 - No Python, no Java, no other language mixed in
 - No external libraries, no frameworks, no third-party code
+- No advanced header files beyond the three allowed
 
 ### RULE 2 — NO STL CONTAINERS
 - Never use vectors, maps, sets, lists, queues, stacks, or any STL container
 - All collections must use plain C++ arrays of fixed size
-- Example: `Seat seats[50]` not `vector<Seat> seats`
+- Example: Use `Student students[50]` not `vector<Student> students`
 
-### RULE 3 — ORGANIZED FILE STRUCTURE
-- Never write all code directly in `main.cpp`
-- Create separate utility files for different components and import them into main
-- Use `#include "filename.cpp"` to import utility files into main.cpp
-- Organize code into logical utility files (e.g., classes.cpp, helpers.cpp, menu.cpp)
-- The main.cpp file should only contain the main() function and necessary includes
-- Keep the project structure clean and modular while avoiding unnecessary file creation
+### RULE 3 — STRICT FILE STRUCTURE
+- The project must have EXACTLY these files and no more:
+  - `main.cpp` — contains ONLY the main() function and #include statements
+  - `classes.h` — contains ALL class definitions and implementations
+  - `helpers.h` — contains ALL helper functions (menu functions, utility functions, etc.)
+  - `README.md` — project documentation
+- Never create additional .cpp or .h files beyond classes.h and helpers.h
+- Never write code directly in main.cpp except the main() function
+- Use `#include "classes.h"` and `#include "helpers.h"` in main.cpp
+- All constants must be defined at the top of classes.h
+- All class definitions and member function implementations go in classes.h
+- All standalone helper functions go in helpers.h
+- Keep main.cpp clean with only: includes, main() function, and the program loop
 
 ### RULE 4 — COMMENT EVERY LINE
 - Every single line of code must have a comment explaining what it does
 - Comments go on the same line using `//`
 - No line of code is allowed to exist without a comment
-- Example: `int seatNumber; // stores the unique number of this seat`
+- Example: `int studentAge; // stores the age of the student`
 
 ### RULE 5 — BEGINNER-FRIENDLY NAMING
 - All variable names must be simple, full English words
 - No abbreviations like arr, ptr, tmp, cnt, sz, idx
-- Good examples: `seatNumber`, `passengerName`, `flightOrigin`, `bookingCounter`
-- Bad examples: `arr[i]`, `ptr->x`, `tmpVal`, `cntSeats`
+- Good examples: `studentName`, `bookTitle`, `accountBalance`, `itemCounter`
+- Bad examples: `arr[i]`, `ptr->x`, `tmpVal`, `cntItems`
 
 ### RULE 6 — NO POINTERS UNLESS NECESSARY
 - Avoid raw pointers wherever possible
@@ -64,11 +67,9 @@ Claude must follow every rule below — no exceptions.
 - If a pointer is absolutely needed, explain why in a comment above it
 
 ### RULE 7 — FIXED ARRAY SIZES
-- Maximum flights in Airline: 10
-- Maximum seats per Flight: 50
-- Maximum bookings per Flight: 50
-- Maximum airlines in system: 1
-- These sizes must be defined as constants at the top of the file
+- All array sizes must be defined as constants at the top of the file
+- Use meaningful constant names like MAX_STUDENTS, MAX_BOOKS, MAX_ACCOUNTS
+- Never use magic numbers directly in array declarations
 
 ### RULE 8 — INPUT VALIDATION
 - Every user input from cin must be checked for basic validity
@@ -83,278 +84,439 @@ Claude must follow every rule below — no exceptions.
 ### RULE 10 — CLEAN TERMINAL OUTPUT
 - Every output section must have a separator line of `=` or `-` characters
 - All menus must be centered and clearly labeled
-- All ticket output must be inside a box made of `|` and `-` characters
 - Leave blank lines between sections for readability
 
-### RULE 11 — AVOID UNNECESSARY FILES
-- Only create files that are absolutely essential for the project
-- Do not create extra documentation files, notes, or temporary files unless explicitly requested
-- Do not create backup files or duplicate versions
-- Keep the project directory clean with only necessary source files and the README.md
-- Every file created must serve a clear, specific purpose in the project
+### RULE 11 — STRICT FILE LIMIT
+- Create ONLY these files: main.cpp, classes.h, helpers.h, README.md
+- Never create additional .cpp or .h files
+- Never create backup files, temporary files, or documentation files beyond README.md
+- If you need to organize code, use comments to separate sections within classes.h or helpers.h
+- Every file created must be one of the four allowed files
+
+### RULE 12 — USE CONTEXT7 FOR AUTHENTIC C++ SYNTAX
+- Before writing any C++ OOP code, query Context7 MCP server for authentic syntax
+- Never hallucinate or invent C++ syntax from training data
+- Verify syntax for: inheritance, polymorphism, operator overloading, friend functions, copy constructors
+- Ensure all code follows standard C++ conventions
+- Keep examples simple and beginner-friendly, not enterprise-level
 
 ---
 
-## SECTION 3: OOP CONCEPTS MAP
+## SECTION 3: FILE ORGANIZATION AND STRUCTURE
 
-Strict map of which OOP concept goes in which class.
+### FILE STRUCTURE RULE — EXACTLY 4 FILES
+Every project must have exactly these files:
 
-### ENCAPSULATION
-- Apply in ALL 6 classes: `Seat`, `Passenger`, `Flight`, `Booking`, `Ticket`, `Airline`
-- All data members must be declared `private`
-- All data members must have a public getter method (`getSeatNumber()`, `getName()`, etc.)
-- All data members must have a public setter method (`setSeatNumber()`, `setName()`, etc.)
+1. **main.cpp** — Contains ONLY:
+   - `#include <iostream>`
+   - `#include <string>`
+   - `#include <cstring>`
+   - `#include "classes.h"`
+   - `#include "helpers.h"`
+   - `int main()` function with the program loop
+   - Nothing else
+
+2. **classes.h** — Contains ONLY:
+   - All constant definitions at the top
+   - All class definitions
+   - All class member function implementations
+   - Static member initializations
+   - Nothing else (no helper functions, no menu code)
+
+3. **helpers.h** — Contains ONLY:
+   - Simple helper functions for menu operations
+   - Simple helper functions for input validation
+   - Simple helper functions for display formatting
+   - Keep each helper function under 20 lines
+   - Each helper function must do ONE specific task
+   - Nothing else (no classes, no complex logic)
+
+4. **README.md** — Project documentation
+
+### HELPER FUNCTIONS RULES
+
+**What goes in helpers.h:**
+- `void displayMenu()` — prints the menu
+- `int getUserChoice()` — gets and validates menu choice
+- `void clearScreen()` — clears the terminal screen
+- `void pauseScreen()` — waits for user to press enter
+- `void printSeparator()` — prints a line of dashes or equals
+- `void displayHeader(string title)` — prints a formatted header
+- Simple input validation functions like `bool isValidAge(int age)`
+- Simple formatting functions like `string formatDate(string date)`
+
+**What does NOT go in helpers.h:**
+- No classes or class definitions
+- No complex business logic
+- No functions longer than 20 lines
+- No functions that do multiple things
+- No global variables
+
+**Helper Function Guidelines:**
+- Each helper function must have a clear, single purpose
+- Function names must be descriptive verbs: `displayMenu()`, `getUserInput()`, `validateAge()`
+- Keep functions simple and straightforward
+- Maximum 20 lines per helper function
+- If a helper function gets longer, break it into smaller helpers
+- Every helper function must have a comment above it explaining what it does
+
+### CODE ORGANIZATION EXAMPLE
+
+**main.cpp structure:**
+```
+#include <iostream>
+#include <string>
+#include <cstring>
+#include "classes.h"
+#include "helpers.h"
+
+using namespace std;
+
+int main()
+{
+    // create main objects
+    // display welcome message
+    // main program loop
+    // display goodbye message
+    return 0;
+}
+```
+
+**classes.h structure:**
+```
+// Constants section
+const int MAX_ITEMS = 100;
+
+// Class 1 definition and implementation
+class ClassName1 { ... };
+
+// Class 2 definition and implementation
+class ClassName2 { ... };
+
+// Static member initializations
+int ClassName::staticMember = 0;
+```
+
+**helpers.h structure:**
+```
+// Menu display helper
+void displayMenu() { ... }
+
+// Input validation helper
+int getUserChoice() { ... }
+
+// Screen formatting helper
+void printSeparator() { ... }
+```
+
+---
+
+## SECTION 4: REQUIRED OOP CONCEPTS
+
+Every C++ OOP project must demonstrate these concepts:
+
+### CONCEPT 1 — CLASSES AND OBJECTS
+- Every project must have at least 3 classes
+- Each class must represent a real-world entity
+- Objects must be created from classes and used throughout the program
+
+### CONCEPT 2 — ENCAPSULATION
+- All data members in every class must be declared `private`
+- Every private data member must have a public getter method
+- Every private data member must have a public setter method
 - No data member is ever accessed directly from outside the class
 
-### COMPOSITION
-- `Flight` class MUST contain: `Seat seats[50]` as a member (not a pointer, not a reference)
-- `Flight` class MUST contain: `Booking bookings[50]` as a member
-- `Airline` class MUST contain: `Flight flights[10]` as a member
-- These are object arrays owned directly by the parent class
+### CONCEPT 3 — CONSTRUCTORS AND DESTRUCTORS
+- Every class must have at least one constructor
+- Constructors must initialize all member variables
+- Destructors should be defined if cleanup is needed
+- Destructors must have a comment explaining what they clean up
 
-### STATIC MEMBERS
-- `Booking` class MUST have: `static int pnrCounter` declared inside the class
-- `Booking` class MUST have: `static int pnrCounter = 0` initialized outside the class
-- Every new Booking object must increment `pnrCounter` and assign it as the PNR number
-- PNR format: `PNR-001`, `PNR-002`, `PNR-003` and so on
+### CONCEPT 4 — CONSTRUCTOR OVERLOADING
+- At least two classes must demonstrate constructor overloading
+- Each class must have: a default constructor (no parameters) and a parameterized constructor
+- Both constructors must properly initialize all member variables
 
-### CONSTRUCTOR OVERLOADING
-- `Passenger` class MUST have Constructor 1: takes `name`, `age`, `idNumber` as parameters
-- `Passenger` class MUST have Constructor 2: takes no parameters (default constructor)
-- `Flight` class MUST have Constructor 1: takes `flightNumber`, `origin`, `destination`, `date`
-- `Flight` class MUST have Constructor 2: takes no parameters (default constructor)
-- Both constructors in each class must initialize all member variables
+### CONCEPT 5 — COPY CONSTRUCTOR
+- At least one class must implement a copy constructor
+- The copy constructor must create a deep copy of all member variables
+- Add a comment explaining why the copy constructor is needed
 
-### OBJECT ARRAYS
-- `Seat seats[50]` inside `Flight` — array of Seat objects (not pointers)
-- `Booking bookings[50]` inside `Flight` — array of Booking objects (not pointers)
-- `Flight flights[10]` inside `Airline` — array of Flight objects (not pointers)
+### CONCEPT 6 — ARRAYS OF OBJECTS
+- At least one class must contain an array of objects as a member variable
+- The array must be a fixed-size array, not a pointer
+- Example: A School class containing `Student students[100]`
 
----
+### CONCEPT 7 — STATIC CLASS MEMBERS
+- At least one class must have a static data member
+- The static member must be initialized outside the class definition
+- At least one static member function must be defined
+- Static members should be used for class-level data (like counters or shared values)
 
-## SECTION 4: CLASS BLUEPRINT
+### CONCEPT 8 — INHERITANCE
+- At least one pair of classes must demonstrate inheritance
+- Use single inheritance (one base class, one derived class)
+- The derived class must inherit from the base class using public inheritance
+- The derived class must add new members or override base class behavior
 
-Exact structure Claude must follow.
+### CONCEPT 9 — MULTI-LEVEL INHERITANCE
+- At least one chain of classes must demonstrate multi-level inheritance
+- Example: Class A → Class B → Class C (C inherits from B, B inherits from A)
+- Each level must add meaningful functionality
 
-### CLASS 1 — Seat
+### CONCEPT 10 — PROTECTED SPECIFIER
+- Base classes in inheritance must use `protected` members
+- Protected members should be accessible to derived classes but not to outside code
+- Add comments explaining why certain members are protected
 
-**Private members:**
-- `int seatNumber`
-- `string seatClass` (values: "economy" or "business")
-- `bool isAvailable`
+### CONCEPT 11 — POLYMORPHISM
+- At least one base class must have virtual functions
+- Derived classes must override these virtual functions
+- Demonstrate runtime polymorphism by calling virtual functions through base class pointers or references
 
-**Public members:**
-- Constructor: `Seat()`
-- Getters: `getSeatNumber()`, `getSeatClass()`, `getIsAvailable()`
-- Setters: `setSeatNumber()`, `setSeatClass()`, `setIsAvailable()`
-- Method: `void displaySeat()` — prints seat info in one line
+### CONCEPT 12 — OPERATOR OVERLOADING
+- At least one class must overload at least one operator
+- Common operators to overload: `+`, `-`, `==`, `<<`, `>>`
+- The overloaded operator must make logical sense for the class
+- Add comments explaining what the operator does
 
-### CLASS 2 — Passenger
+### CONCEPT 13 — FRIEND FUNCTIONS
+- At least one class must declare a friend function
+- The friend function must access private members of the class
+- Add a comment explaining why the function needs to be a friend
 
-**Private members:**
-- `string passengerName`
-- `int passengerAge`
-- `string passengerId`
+### CONCEPT 14 — ABSTRACTION
+- Classes must hide implementation details and expose only necessary interfaces
+- Complex operations should be broken into private helper methods
+- Public methods should provide simple, clear interfaces
 
-**Public members:**
-- Constructor 1: `Passenger(string name, int age, string id)`
-- Constructor 2: `Passenger()`
-- Getters: `getName()`, `getAge()`, `getId()`
-- Setters: `setName()`, `setAge()`, `setId()`
-- Method: `void displayPassenger()` — prints passenger info
+### CONCEPT 15 — REUSABILITY
+- Classes should be designed to be reusable in different contexts
+- Avoid hardcoding values inside classes
+- Use parameters and configuration to make classes flexible
 
-### CLASS 3 — Flight
-
-**Private members:**
-- `string flightNumber`
-- `string originCity`
-- `string destinationCity`
-- `string flightDate`
-- `Seat seats[50]`
-- `int totalSeats`
-- `Booking bookings[50]`
-- `int totalBookings`
-
-**Public members:**
-- Constructor 1: `Flight(string number, string origin, string dest, string date)`
-- Constructor 2: `Flight()`
-- Getters and Setters for all primitive members
-- Method: `void setupSeats(int economyCount, int businessCount)`
-- Method: `void displayFlight()` — prints flight summary
-- Method: `int findAvailableSeat(string seatClass)` — returns seat index or -1
-- Method: `bool addBooking(Booking newBooking)` — adds booking to array
-- Method: `bool cancelBooking(string pnrNumber)` — removes booking, frees seat
-- Method: `void displayManifest()` — prints all booked passengers
-
-### CLASS 4 — Booking
-
-**Private members:**
-- `string pnrNumber`
-- `Passenger bookingPassenger`
-- `string bookedFlightNumber`
-- `int bookedSeatNumber`
-- `string bookedSeatClass`
-
-**Static member:**
-- `static int pnrCounter`
-
-**Public members:**
-- Constructor: `Booking()`
-- Method: `void createBooking(Passenger p, string flightNum, int seatNum, string seatClass)`
-- Getters: `getPnrNumber()`, `getPassenger()`, `getFlightNumber()`, `getSeatNumber()`, `getSeatClass()`
-- Method: `void displayBooking()` — prints booking summary
-
-### CLASS 5 — Ticket
-
-**Private members:**
-- `Booking ticketBooking`
-
-**Public members:**
-- Constructor: `Ticket(Booking b)`
-- Method: `void printTicket()` — prints a fully formatted ticket inside a box
-
-### CLASS 6 — Airline
-
-**Private members:**
-- `string airlineName`
-- `Flight flights[10]`
-- `int totalFlights`
-
-**Public members:**
-- Constructor: `Airline(string name)`
-- Method: `bool addFlight(Flight newFlight)` — adds flight to array
-- Method: `void searchFlights(string origin, string destination)` — displays matches
-- Method: `int findFlight(string flightNumber)` — returns index or -1
-- Method: `void displayAllFlights()` — shows all flights
-- Method: `void loadSampleData()` — pre-loads 2 sample flights on startup
+### CONCEPT 16 — CLASS RELATIONSHIPS
+- Demonstrate composition: one class contains objects of another class
+- Demonstrate aggregation: one class has a reference to objects of another class
+- Demonstrate association: classes interact with each other through method calls
 
 ---
 
-## SECTION 5: FEATURE IMPLEMENTATION PLAN
+## SECTION 4: OOP CONCEPTS IMPLEMENTATION GUIDE
 
-Step-by-step build order Claude must follow in exact order:
+### ENCAPSULATION IMPLEMENTATION
+- Declare all data members as `private:`
+- Create getter methods with names like `getName()`, `getAge()`, `getBalance()`
+- Create setter methods with names like `setName()`, `setAge()`, `setBalance()`
+- Getters should return the value of the private member
+- Setters should take a parameter and assign it to the private member
+- Add validation in setters if needed (e.g., age cannot be negative)
 
-1. Write all constants at the top in a separate utility file (`constants.cpp`)
-2. Write the `Seat` class completely with all comments in `classes.cpp`
-3. Write the `Passenger` class completely with both constructors and all comments in `classes.cpp`
-4. Write the `Booking` class with static counter and all comments in `classes.cpp`
-5. Write the `Ticket` class with formatted box print method and all comments in `classes.cpp`
-6. Write the `Flight` class with object arrays and all methods and all comments in `classes.cpp`
-7. Write the `Airline` class with all methods and all comments in `classes.cpp`
-8. Write the static member initialization: `int Booking::pnrCounter = 0;` in `classes.cpp`
-9. Write all standalone helper functions for the menu in `helpers.cpp`
-10. Write the `main()` function in `main.cpp` with proper includes and the looping menu
-11. Call `loadSampleData()` at the very start of `main()`
-12. Test all features mentally by tracing through the code once
+### CONSTRUCTOR IMPLEMENTATION
+- Default constructor: takes no parameters, initializes members to default values
+- Parameterized constructor: takes parameters, initializes members with those values
+- Copy constructor: takes a reference to another object of the same class, copies all members
+- Constructor overloading: multiple constructors with different parameter lists
 
-**File Organization:**
-- `constants.cpp` — all constant definitions
-- `classes.cpp` — all 6 class definitions and implementations
-- `helpers.cpp` — all helper functions for menu operations
-- `main.cpp` — includes the above files and contains only the main() function
+### STATIC MEMBERS IMPLEMENTATION
+- Declare static data member inside the class with `static` keyword
+- Initialize static data member outside the class: `int ClassName::staticMember = 0;`
+- Static member functions can only access static data members
+- Call static functions using class name: `ClassName::staticFunction()`
 
----
+### INHERITANCE IMPLEMENTATION
+- Base class: the parent class that is inherited from
+- Derived class: the child class that inherits from the base class
+- Use syntax: `class Derived : public Base`
+- Derived class automatically gets all public and protected members of base class
+- Derived class can add new members and methods
+- Derived class can override base class methods
 
-## SECTION 6: MENU SYSTEM SPECIFICATION
+### POLYMORPHISM IMPLEMENTATION
+- Declare functions in base class as `virtual`
+- Override virtual functions in derived classes
+- Use base class pointer or reference to point to derived class objects
+- When calling virtual function through base class pointer, derived class version is called
+- This is runtime polymorphism (dynamic binding)
 
-The menu must loop forever until the user enters 0.
+### OPERATOR OVERLOADING IMPLEMENTATION
+- Define operator function inside or outside the class
+- Syntax inside class: `ReturnType operator+(const ClassName& other)`
+- Syntax outside class: `ReturnType operator+(const ClassName& obj1, const ClassName& obj2)`
+- Return appropriate type (often the class itself or a bool for comparison operators)
+- For `<<` and `>>` operators, declare as friend functions
 
-Display this exact layout:
-
-```
-==========================================
-      AIRLINE RESERVATION SYSTEM
-==========================================
-  1. Add New Flight
-  2. Search Flights by Route
-  3. Book a Seat
-  4. Cancel a Booking
-  5. View Ticket
-  6. View Passenger Manifest
-  0. Exit
-==========================================
-Enter your choice:
-```
-
-### Each menu option must:
-
-**Option 1 — Add New Flight:**
-- Ask for: flight number, origin city, destination city, date, number of economy seats, number of business seats
-- Then call: `airline.addFlight()` and `flight.setupSeats()`
-
-**Option 2 — Search Flights by Route:**
-- Ask for: origin city, destination city
-- Then call: `airline.searchFlights()`
-- Show: flight number, route, date, available seat counts
-
-**Option 3 — Book a Seat:**
-- Ask for: flight number, passenger name, age, ID number, seat class preference
-- Then call: `flight.findAvailableSeat()`, create Booking, call `flight.addBooking()`
-- Show: success message with assigned PNR number
-
-**Option 4 — Cancel a Booking:**
-- Ask for: PNR number
-- Then call: `flight.cancelBooking()`
-- Show: success message confirming cancellation and freed seat
-
-**Option 5 — View Ticket:**
-- Ask for: PNR number
-- Then find the booking, create Ticket object, call `ticket.printTicket()`
-- Show: full formatted ticket inside a box
-
-**Option 6 — View Passenger Manifest:**
-- Ask for: flight number
-- Then call: `flight.displayManifest()`
-- Show: numbered list with passenger name, seat number, seat class
+### FRIEND FUNCTION IMPLEMENTATION
+- Declare friend function inside the class using `friend` keyword
+- Define the friend function outside the class (without `friend` keyword)
+- Friend function can access private and protected members of the class
+- Friend function is not a member of the class
+- Use friend functions for operator overloading or when two classes need to access each other's private data
 
 ---
 
-## SECTION 7: TICKET FORMAT SPECIFICATION
+## SECTION 5: INHERITANCE AND POLYMORPHISM RULES
 
-Claude must print the ticket in exactly this box format:
+### INHERITANCE RULE 1 — SINGLE INHERITANCE
+- One derived class inherits from one base class
+- Use `public` inheritance: `class Derived : public Base`
+- Derived class gets all public and protected members of base class
+- Private members of base class are not accessible in derived class
 
-```
-+------------------------------------------+
-|          BOARDING PASS / TICKET          |
-+------------------------------------------+
-|  PNR Number   : PNR-001                  |
-|  Passenger    : Muhammad Ali             |
-|  Flight       : PK-301                   |
-|  From         : Lahore                   |
-|  To           : Karachi                  |
-|  Date         : 2025-06-01               |
-|  Seat Number  : 3                        |
-|  Seat Class   : Economy                  |
-+------------------------------------------+
-|         HAVE A PLEASANT JOURNEY          |
-+------------------------------------------+
-```
+### INHERITANCE RULE 2 — MULTI-LEVEL INHERITANCE
+- Class B inherits from Class A
+- Class C inherits from Class B
+- Class C gets members from both A and B
+- Each level should add meaningful functionality
 
----
+### INHERITANCE RULE 3 — PROTECTED MEMBERS
+- Use `protected:` access specifier in base class
+- Protected members are accessible in derived classes
+- Protected members are not accessible outside the class hierarchy
+- Use protected for data that derived classes need to access
 
-## SECTION 8: SAMPLE DATA SPECIFICATION
+### INHERITANCE RULE 4 — CONSTRUCTOR CHAINING
+- When creating a derived class object, base class constructor is called first
+- Derived class constructor can explicitly call base class constructor
+- Use initialization list to call base class constructor
 
-Claude must pre-load exactly this data when the program starts:
+### POLYMORPHISM RULE 1 — VIRTUAL FUNCTIONS
+- Declare functions as `virtual` in base class
+- Override virtual functions in derived classes
+- Virtual functions enable runtime polymorphism
 
-**Flight 1:**
-- `flightNumber` = "PK-301"
-- `originCity` = "Lahore"
-- `destinationCity` = "Karachi"
-- `flightDate` = "2025-06-01"
-- Economy seats = 5 (seat numbers 1 to 5)
-- Business seats = 2 (seat numbers 6 and 7)
+### POLYMORPHISM RULE 2 — PURE VIRTUAL FUNCTIONS (AVOID)
+- Do not use pure virtual functions (abstract classes) in beginner projects
+- Pure virtual functions make classes abstract and add complexity
+- Stick to regular virtual functions that have implementations
 
-**Flight 2:**
-- `flightNumber` = "PK-502"
-- `originCity` = "Islamabad"
-- `destinationCity` = "Dubai"
-- `flightDate` = "2025-06-05"
-- Economy seats = 4 (seat numbers 1 to 4)
-- Business seats = 2 (seat numbers 5 and 6)
+### POLYMORPHISM RULE 3 — VIRTUAL DESTRUCTORS
+- If a class has virtual functions, its destructor should also be virtual
+- This ensures proper cleanup when deleting derived class objects through base class pointers
 
 ---
 
-## SECTION 9: DEBUGGING RULES
+## SECTION 6: SPECIAL FEATURES GUIDE
+
+### STATIC MEMBERS USAGE
+- Use static data members for class-level counters (e.g., total number of objects created)
+- Use static data members for shared configuration values
+- Use static member functions for utility functions that don't need object state
+- Static members belong to the class, not to individual objects
+
+### FRIEND FUNCTIONS USAGE
+- Use friend functions when a function needs to access private data of multiple classes
+- Use friend functions for operator overloading (especially `<<` and `>>`)
+- Use friend functions sparingly — they break encapsulation
+- Always add a comment explaining why a function needs to be a friend
+
+### OPERATOR OVERLOADING USAGE
+- Overload `+` for adding two objects (e.g., adding two complex numbers)
+- Overload `-` for subtracting two objects
+- Overload `==` for comparing two objects for equality
+- Overload `<<` for output (printing object to cout)
+- Overload `>>` for input (reading object from cin)
+- Make sure overloaded operators behave intuitively
+
+### COPY CONSTRUCTOR USAGE
+- Use copy constructor when an object contains dynamically allocated memory (though we avoid this)
+- Use copy constructor when an object contains resources that need special copying
+- Copy constructor is called when: passing object by value, returning object by value, initializing object with another object
+- Syntax: `ClassName(const ClassName& other)`
+
+---
+
+## SECTION 7: SYNTAX SIMPLICITY RULES
+
+Mandatory syntax rules Claude must never violate:
+
+### SIMPLE SYNTAX RULE 1 — NO COMPLEX EXPRESSIONS
+- Never write two operations on the same line
+- Bad: `array[++index].setValue(flag == true ? 1 : 0);`
+- Good: Write each operation on a separate line with clear variable names
+
+### SIMPLE SYNTAX RULE 2 — NO TERNARY OPERATORS
+- Never use the ternary operator `? :`
+- Always use a full if/else block instead
+
+### SIMPLE SYNTAX RULE 3 — NO NESTED FUNCTION CALLS
+- Never call a function inside another function call on the same line
+- Bad: `object.method(createObject(getValue(x, y)));`
+- Good: Break into separate lines with intermediate variables
+
+### SIMPLE SYNTAX RULE 4 — ONE STATEMENT PER LINE
+- Every statement must be on its own separate line
+- Never chain multiple statements with semicolons on one line
+
+### SIMPLE SYNTAX RULE 5 — ALLOWED OOP FEATURES
+- DO use: classes, objects, constructors, destructors, encapsulation
+- DO use: inheritance (single and multi-level), polymorphism (virtual functions)
+- DO use: operator overloading, friend functions, static members
+- DO use: copy constructors, protected specifiers
+- DO NOT use: templates, generic programming, abstract base classes
+- DO NOT use: multiple inheritance, virtual inheritance
+- Keep it simple and educational
+
+### SIMPLE SYNTAX RULE 6 — SIMPLE IF/ELSE ONLY
+- Use only simple if, else if, else blocks for all decisions
+- Switch/case is allowed only for menus
+- Never nest more than 2 levels of if/else inside each other
+- If logic is getting deeply nested, break it into a separate method
+
+### SIMPLE SYNTAX RULE 7 — SIMPLE LOOPS ONLY
+- Use only for loops and while loops
+- Never use do-while loops
+- Never use complex loop conditions with multiple `&&` or `||` on one line
+- Break complex conditions into separate bool variables first
+
+### SIMPLE SYNTAX RULE 8 — SIMPLE STRING OPERATIONS ONLY
+- Only use `==` to compare strings
+- Only use `=` to assign strings
+- Only use `+` to join strings
+- Never use string iterators or string algorithms
+- Never use substr, find, replace unless absolutely necessary
+- If substr or find is needed, write a comment explaining exactly what it does
+
+### SIMPLE SYNTAX RULE 9 — CLEAR RETURN STATEMENTS
+- Every function that returns a value must have one clear return statement
+- Never return complex expressions
+- Assign result to a variable first, then return the variable
+
+### SIMPLE SYNTAX RULE 10 — READABLE BOOLEAN VARIABLES
+- Never use raw true/false in conditions without a named variable
+- Always assign bool results to a clearly named variable first
+
+### SIMPLE SYNTAX RULE 11 — SPACING AND INDENTATION
+- Use 4 spaces for every level of indentation (no tabs)
+- Always put opening curly brace `{` on its own new line
+- Always put closing curly brace `}` on its own new line
+- Leave one blank line between every method definition
+- Leave one blank line between every major block inside a method
+
+### SIMPLE SYNTAX RULE 12 — AVOID CONFUSING SYMBOLS
+- Never use bitwise operators: `&`, `|`, `^`, `~`, `<<`, `>>`
+- Never use pointer arithmetic: `*`, `->`, `&variable`
+- Never use increment/decrement inside expressions: `array[i++]`, `*ptr++`
+- Always increment/decrement on a separate line
+
+### SIMPLE SYNTAX RULE 13 — FUNCTION SIZE LIMIT
+- No single function or method should be longer than 30 lines
+- If a method is getting longer than 30 lines, break it into 2 smaller helper methods
+- This keeps every function easy to read in one glance
+
+### SIMPLE SYNTAX RULE 14 — NO MAGIC NUMBERS
+- Never use raw numbers directly in logic
+- Always define them as named constants at the top
+
+### SIMPLE SYNTAX RULE 15 — WRITE FOR A BEGINNER READER
+- Imagine the person reading this code has only 3 months of C++ experience
+- Every piece of logic must be so clear that a beginner can understand it without asking any questions
+- If a block of code feels clever or tricky, rewrite it to be simpler
+- Simple and correct is always better than clever and confusing
+
+---
+
+## SECTION 8: DEBUGGING RULES
 
 Mandatory debugging steps Claude must follow:
 
@@ -371,34 +533,7 @@ Mandatory debugging steps Claude must follow:
 
 ---
 
-## SECTION 10: VERIFICATION CHECKLIST
-
-Must all be true before project is complete:
-
-- [ ] All 6 classes are fully implemented with private data and public methods
-- [ ] Encapsulation is applied in every class
-- [ ] Composition is correctly used (object arrays, not pointers)
-- [ ] Static PNR counter works and generates unique PNR-001, PNR-002 format
-- [ ] Both constructors exist in Passenger and Flight classes
-- [ ] Object arrays are used everywhere (no vectors, no maps)
-- [ ] Every line of code has a comment
-- [ ] No variable name is abbreviated or unclear
-- [ ] All 6 menu options work without crashing
-- [ ] Booking correctly marks the seat as unavailable
-- [ ] Cancellation correctly marks the seat as available again
-- [ ] Ticket prints inside a properly formatted box
-- [ ] Passenger manifest shows correct data per flight
-- [ ] Sample data loads automatically on startup
-- [ ] Program handles invalid menu input without crashing
-- [ ] Code is organized into proper utility files (constants.cpp, classes.cpp, helpers.cpp, main.cpp)
-- [ ] main.cpp only contains the main() function and necessary includes
-- [ ] No unnecessary files exist in the project directory
-- [ ] Code compiles cleanly with: `g++ main.cpp -o airline`
-- [ ] Program runs correctly with: `./airline`
-
----
-
-## SECTION 11: DOCUMENTATION RULES
+## SECTION 9: DOCUMENTATION RULES
 
 Rules for documentation:
 
@@ -407,13 +542,78 @@ Rules for documentation:
 - **DOC RULE 3:** Every method must have a comment above it describing what it does
 - **DOC RULE 4:** Every section of main() must have a comment describing what that section does
 - **DOC RULE 5:** A README.md file must be created alongside main.cpp
-- **DOC RULE 6:** README.md must include: project description, how to compile, how to run, OOP concepts used, class list, feature list, and sample session walkthrough
+- **DOC RULE 6:** README.md must include: project description, how to compile, how to run, OOP concepts used, class list, feature list
+
+---
+
+## SECTION 10: GENERAL VERIFICATION CHECKLIST
+
+Must all be true before any project is complete:
+
+**FILE ORGANIZATION:**
+- [ ] Project has EXACTLY 4 files: main.cpp, classes.h, helpers.h, README.md
+- [ ] No additional .cpp or .h files exist
+- [ ] No backup files, temporary files, or extra documentation files exist
+- [ ] main.cpp contains ONLY: includes and main() function
+- [ ] classes.h contains ONLY: constants and class definitions
+- [ ] helpers.h contains ONLY: simple helper functions (each under 20 lines)
+- [ ] All helper functions do ONE specific task
+- [ ] No classes or complex logic in helpers.h
+- [ ] Code compiles cleanly with: `g++ main.cpp -o <program_name>`
+
+**OOP CONCEPTS:**
+- [ ] All required OOP concepts are implemented (see Section 4)
+- [ ] Encapsulation is applied in every class (private data, public getters/setters)
+- [ ] At least one class demonstrates constructor overloading
+- [ ] At least one class demonstrates copy constructor
+- [ ] At least one class contains an array of objects
+- [ ] At least one class has static members (data and function)
+- [ ] At least one pair of classes demonstrates inheritance
+- [ ] At least one chain demonstrates multi-level inheritance
+- [ ] At least one base class uses protected members
+- [ ] At least one class demonstrates polymorphism with virtual functions
+- [ ] At least one class demonstrates operator overloading
+- [ ] At least one class demonstrates friend function
+
+**CODE QUALITY:**
+- [ ] Every line of code has a comment
+- [ ] No variable name is abbreviated or unclear
+- [ ] All user inputs are validated
+- [ ] Program handles invalid input without crashing
+- [ ] All syntax simplicity rules are followed
+- [ ] No STL containers are used (only plain arrays)
+- [ ] Only allowed headers are used: iostream, string, cstring
+- [ ] No dynamic memory allocation (no new/delete)
+- [ ] Program runs correctly without crashes
+- [ ] README.md is complete and accurate
+
+---
+
+## SECTION 11: CONTEXT7 USAGE REQUIREMENT
+
+**CRITICAL INSTRUCTION:**
+
+Before writing any C++ OOP code, Claude MUST:
+
+1. Query the Context7 MCP server for authentic C++ syntax
+2. Verify syntax for: inheritance, polymorphism, virtual functions, operator overloading, friend functions, copy constructors, static members
+3. Never hallucinate or invent C++ syntax from training data
+4. Ensure all code examples follow standard C++ conventions
+5. Keep all examples simple and beginner-friendly
+6. Avoid enterprise-level patterns or complex architectures
+7. Focus on educational clarity, not production-ready code
+
+**How to use Context7:**
+- Use `mcp__plugin_context7_context7__resolve-library-id` to find C++ documentation
+- Use `mcp__plugin_context7_context7__query-docs` to get specific syntax examples
+- Always verify syntax before writing code
+- If Context7 is unavailable, use web search for cppreference.com or learncpp.com
 
 ---
 
 ## SECTION 12: FINAL INSTRUCTION TO CLAUDE
 
-When working on this project, Claude must:
+When working on any C++ OOP project, Claude must:
 
 1. Read this entire CLAUDE.md file before writing a single line of code
 2. Follow every rule in every section without exception
@@ -423,164 +623,13 @@ When working on this project, Claude must:
 5. Never mark the project as complete unless every item in Section 10 is confirmed
 6. If any rule conflicts with a user request, follow the rule and explain why
 7. Always prioritize correctness over speed
-8. This CLAUDE.md file is the single source of truth for this entire project
-
----
-
-## SECTION 13: SYNTAX SIMPLICITY RULES
-
-Mandatory syntax rules Claude must never violate:
-
-### SIMPLE SYNTAX RULE 1 — NO COMPLEX EXPRESSIONS
-- Never write two operations on the same line
-- **Bad:** `seats[++index].setAvailable(flag == true ? 1 : 0);`
-- **Good:**
-  ```cpp
-  index = index + 1;
-  seats[index].setAvailable(false);
-  ```
-
-### SIMPLE SYNTAX RULE 2 — NO TERNARY OPERATORS
-- Never use the ternary operator `? :`
-- Always use a full if/else block instead
-- **Bad:** `string result = (x > 0) ? "yes" : "no";`
-- **Good:**
-  ```cpp
-  string result = "";
-  if (x > 0)
-  {
-      result = "yes";
-  }
-  else
-  {
-      result = "no";
-  }
-  ```
-
-### SIMPLE SYNTAX RULE 3 — NO NESTED FUNCTION CALLS
-- Never call a function inside another function call on the same line
-- **Bad:** `flight.addBooking(createBooking(getPassenger(name, age)));`
-- **Good:**
-  ```cpp
-  Passenger newPassenger = getPassenger(name, age);
-  Booking newBooking = createBooking(newPassenger);
-  flight.addBooking(newBooking);
-  ```
-
-### SIMPLE SYNTAX RULE 4 — ONE STATEMENT PER LINE
-- Every statement must be on its own separate line
-- Never chain multiple statements with semicolons on one line
-- **Bad:** `int x = 0; int y = 0; int z = 0;`
-- **Good:**
-  ```cpp
-  int x = 0;
-  int y = 0;
-  int z = 0;
-  ```
-
-### SIMPLE SYNTAX RULE 5 — NO ADVANCED OOP FEATURES
-- Never use inheritance or virtual functions
-- Never use templates or generic programming
-- Never use operator overloading
-- Never use friend classes or friend functions
-- Never use abstract classes or interfaces
-- Only use the basic OOP: classes, objects, constructors, methods
-
-### SIMPLE SYNTAX RULE 6 — SIMPLE IF/ELSE ONLY
-- Use only simple if, else if, else blocks for all decisions
-- Switch/case is allowed only for the main menu
-- Never nest more than 2 levels of if/else inside each other
-- If logic is getting deeply nested, break it into a separate method
-
-### SIMPLE SYNTAX RULE 7 — SIMPLE LOOPS ONLY
-- Use only for loops and while loops
-- Never use do-while loops
-- Never use complex loop conditions with multiple `&&` or `||` on one line
-- Break complex conditions into separate bool variables first
-- **Bad:** `while (i < total && seats[i].getIsAvailable() && count < max)`
-- **Good:**
-  ```cpp
-  bool notAtEnd = (i < total);
-  bool seatFree = seats[i].getIsAvailable();
-  bool spaceLeft = (count < max);
-  while (notAtEnd && seatFree && spaceLeft)
-  ```
-
-### SIMPLE SYNTAX RULE 8 — SIMPLE STRING OPERATIONS ONLY
-- Only use `==` to compare strings
-- Only use `=` to assign strings
-- Only use `+` to join strings
-- Never use string iterators or string algorithms
-- Never use substr, find, replace unless absolutely necessary
-- If substr or find is needed, write a comment explaining exactly what it does
-
-### SIMPLE SYNTAX RULE 9 — CLEAR RETURN STATEMENTS
-- Every function that returns a value must have one clear return statement
-- Never return complex expressions
-- **Bad:** `return (count > 0) ? seats[count-1].getSeatNumber() : -1;`
-- **Good:**
-  ```cpp
-  if (count > 0)
-  {
-      return seats[count - 1].getSeatNumber();
-  }
-  return -1;
-  ```
-
-### SIMPLE SYNTAX RULE 10 — READABLE BOOLEAN VARIABLES
-- Never use raw true/false in conditions without a named variable
-- Always assign bool results to a clearly named variable first
-- **Bad:** `if (bookings[i].getPnrNumber() == pnrInput && seats[j].getIsAvailable())`
-- **Good:**
-  ```cpp
-  bool pnrMatches = (bookings[i].getPnrNumber() == pnrInput);
-  bool seatIsFree = seats[j].getIsAvailable();
-  if (pnrMatches && seatIsFree)
-  ```
-
-### SIMPLE SYNTAX RULE 11 — SPACING AND INDENTATION
-- Use 4 spaces for every level of indentation (no tabs)
-- Always put opening curly brace `{` on its own new line
-- Always put closing curly brace `}` on its own new line
-- Leave one blank line between every method definition
-- Leave one blank line between every major block inside a method
-
-### SIMPLE SYNTAX RULE 12 — AVOID CONFUSING SYMBOLS
-- Never use bitwise operators: `&`, `|`, `^`, `~`, `<<`, `>>`
-- Never use pointer arithmetic: `*`, `->`, `&variable`
-- Never use increment/decrement inside expressions: `array[i++]`, `*ptr++`
-- Always increment/decrement on a separate line
-- **Bad:** `cout << array[i++];`
-- **Good:**
-  ```cpp
-  cout << array[i];
-  i = i + 1;
-  ```
-
-### SIMPLE SYNTAX RULE 13 — FUNCTION SIZE LIMIT
-- No single function or method should be longer than 30 lines
-- If a method is getting longer than 30 lines, break it into 2 smaller helper methods
-- This keeps every function easy to read in one glance
-
-### SIMPLE SYNTAX RULE 14 — NO MAGIC NUMBERS
-- Never use raw numbers directly in logic
-- Always define them as named constants at the top
-- **Bad:** `if (totalFlights >= 10)`
-- **Good:**
-  ```cpp
-  const int MAX_FLIGHTS = 10;
-  if (totalFlights >= MAX_FLIGHTS)
-  ```
-
-### SIMPLE SYNTAX RULE 15 — WRITE FOR A BEGINNER READER
-- Imagine the person reading this code has only 3 months of C++ experience
-- Every piece of logic must be so clear that a beginner can understand it without asking any questions
-- If a block of code feels clever or tricky, rewrite it to be simpler
-- Simple and correct is always better than clever and confusing
+8. Always use Context7 or web search to verify C++ syntax before writing code
+9. Keep all code simple, educational, and beginner-friendly
+10. This CLAUDE.md file is the single source of truth for all C++ OOP projects
 
 ---
 
 **END OF CLAUDE.MD**
 
-This file is the single source of truth for the Airline Reservation System project.
+This file is the universal guide for all C++ OOP projects.
 All development must strictly adhere to these specifications.
