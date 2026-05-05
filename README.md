@@ -1,194 +1,192 @@
 # Airline Reservation System
 
-A comprehensive C++ console application demonstrating core Object-Oriented Programming (OOP) concepts through a real-world airline reservation system.
-
-## Overview
-
-**Language:** C++11 (Pure Standard, No External Libraries)  
-**Type:** Terminal-Based Console Application  
-**Level:** Intermediate  
-**Status:** Production Ready
-
-Educational implementation showcasing encapsulation, inheritance, polymorphism, composition, and abstraction through practical airline booking functionality.
+**A beginner-friendly C++ OOP project demonstrating core object-oriented programming concepts**
 
 ---
 
-## Features
+## Project Description
 
-### Core Functionality
-- **Flight Management** - View flights, search by route
-- **Booking System** - Book seats, cancel reservations, view details
-- **Seat Selection** - Economy and Business class options
-- **Payment Processing** - Credit Card, Cash, Loyalty Points
-- **User Management** - Admin and Customer roles with distinct privileges
-- **Loyalty Program** - Points accumulation and tier upgrades
-- **Passenger Manifest** - View all passengers per flight
-- **Ticket Generation** - Formatted boarding passes
+This is a terminal-based airline reservation system built in pure standard C++ to demonstrate fundamental Object-Oriented Programming (OOP) concepts. The system allows users to view flights, search by route, book seats, cancel bookings, view tickets, and see passenger manifests.
 
-### User Roles
-- **Admin** - Manage flights, users, and reports
-- **Customer** - Book flights, earn points, redeem rewards
+The project is designed for learning purposes with:
+- **Every line of code commented** for educational clarity
+- **Beginner-friendly syntax** with no complex expressions
+- **Pure C++ only** - no external libraries or frameworks
+- **Fixed-size arrays** instead of STL containers
+- **No dynamic memory allocation** (no `new`/`delete`)
 
 ---
 
-## Quick Start
+## How to Compile
 
-### Prerequisites
-- C++ compiler with C++11 support (g++, clang++)
-- GNU Make (optional)
-- Linux, macOS, or Windows (MinGW/Cygwin)
-
-### Installation
+Use the standard g++ compiler with this simple command:
 
 ```bash
-git clone <repository-url>
-cd airline-reservation-system
+g++ main.cpp -o airline
 ```
 
-### Build and Run
+**Requirements:**
+- g++ compiler (any standard version)
+- No external libraries needed
+- Works on Linux, macOS, and Windows (with MinGW)
 
-**Using Make (Recommended):**
+---
+
+## How to Run
+
+After compiling, run the program:
+
 ```bash
-make              # Build project
-make run          # Run application
-make test         # Run tests
-make clean        # Clean build artifacts
+./airline
 ```
 
-**Using Scripts:**
+On Windows:
 ```bash
-# Windows
-scripts/windows/compile.bat
-scripts/windows/run.bat
-
-# Unix/Linux/macOS
-scripts/unix/compile.sh
-scripts/unix/run.sh
-```
-
-**Manual Compilation:**
-```bash
-mkdir -p bin
-g++ -std=c++11 src/main.cpp src/domain/*.cpp -o bin/airline -I src/domain
-./bin/airline
+airline.exe
 ```
 
 ---
 
-## Project Structure
+## File Structure
 
-```
-airline-reservation-system/
-├── src/
-│   ├── domain/                    # Core domain classes
-│   │   ├── Seat.{h,cpp}          # Seat management
-│   │   ├── Passenger.{h,cpp}     # Passenger information
-│   │   ├── Booking.{h,cpp}       # Booking logic
-│   │   ├── Flight.{h,cpp}        # Flight operations
-│   │   ├── Airline.{h,cpp}       # Airline management
-│   │   ├── User.{h,cpp}          # User base class
-│   │   ├── Admin.{h,cpp}         # Admin functionality
-│   │   ├── Customer.{h,cpp}      # Customer functionality
-│   │   ├── Payment.{h,cpp}       # Payment abstract base
-│   │   ├── CreditCardPayment.{h,cpp}
-│   │   ├── CashPayment.{h,cpp}
-│   │   └── PointsPayment.{h,cpp}
-│   ├── main.cpp                   # Application entry point
-│   └── test_user_hierarchy.cpp    # Unit tests
-├── scripts/
-│   ├── windows/                   # Windows build scripts
-│   │   ├── compile.bat
-│   │   └── run.bat
-│   └── unix/                      # Unix/Linux/macOS scripts
-│       ├── compile.sh
-│       └── run.sh
-├── bin/                           # Compiled binaries (generated)
-├── docs/                          # Documentation
-│   └── superpowers/
-│       ├── specs/                 # Design specifications
-│       └── plans/                 # Implementation plans
-├── Makefile                       # Build automation
-└── README.md                      # This file
-```
+The project consists of **exactly 4 files** as per the project requirements:
+
+1. **main.cpp** - Entry point containing only the main() function and includes
+2. **classes.h** - All 13 class definitions and implementations
+3. **helpers.h** - All helper functions for menus and operations
+4. **README.md** - This documentation file
 
 ---
 
 ## OOP Concepts Demonstrated
 
-### 1. Encapsulation
-Private data members with public getter/setter methods for controlled access.
+This project demonstrates **all major OOP concepts** required for an intermediate-level C++ course:
 
-```cpp
-class Seat {
-private:
-    int seatNumber;
-    string seatClass;
-    bool isAvailable;
-public:
-    int getSeatNumber();
-    void setSeatNumber(int num);
-};
-```
+### 1. Classes and Objects
+- **13 classes** representing real-world entities
+- Objects created and used throughout the program
 
-### 2. Composition (HAS-A)
-Objects contain other objects as members.
+### 2. Encapsulation
+- All data members are **private**
+- Public **getter and setter methods** for controlled access
+- Implementation details hidden from outside code
 
-- `Flight` HAS-A array of `Seat` objects
-- `Flight` HAS-A array of `Booking` objects
-- `Airline` HAS-A array of `Flight` objects
-- `Booking` HAS-A `Passenger` object
+### 3. Constructor Overloading
+- **Default constructors** (no parameters)
+- **Parameterized constructors** (with initialization values)
+- Every class demonstrates constructor overloading
 
-### 3. Inheritance (IS-A)
-Derived classes inherit from base classes.
+### 4. Copy Constructor
+- Implemented in `Passenger` and `Flight` classes
+- Creates deep copies of objects safely
 
-**User Hierarchy:**
-- `Admin` IS-A `User`
-- `Customer` IS-A `User`
+### 5. Arrays of Objects
+- `Flight` contains arrays of `Seat[]` and `Booking[]`
+- `Airline` contains array of `Flight[]`
+- Demonstrates composition relationships
 
-**Payment Hierarchy:**
-- `CreditCardPayment` IS-A `Payment`
-- `CashPayment` IS-A `Payment`
-- `PointsPayment` IS-A `Payment`
+### 6. Static Class Members
+- `Booking::bookingCounter` - shared counter for generating unique PNR numbers
+- `Airline::totalAirlinesCreated` - tracks total airline objects created
+- Static member functions to access static data
 
-### 4. Polymorphism
-Virtual methods enable runtime polymorphism.
+### 7. Inheritance - Single Level
+- `Admin` inherits from `User` (User → Admin)
+- `Customer` inherits from `User` (User → Customer)
+- `CashPayment` inherits from `Payment` (Payment → CashPayment)
+- `LoyaltyPayment` inherits from `Payment` (Payment → LoyaltyPayment)
 
-```cpp
-User* user = new Admin();
-user->displayInfo();  // Calls Admin's version
-```
+### 8. Inheritance - Multi-Level
+- `Payment` → `OnlinePayment` → `CreditCardPayment`
+- Three-level inheritance chain demonstrating hierarchical relationships
 
-### 5. Abstraction
-Pure virtual methods force derived class implementation.
+### 9. Protected Members
+- `User` base class uses **protected** members
+- Accessible in derived classes (`Admin`, `Customer`)
+- Not accessible from outside the class hierarchy
 
-```cpp
-class Payment {
-public:
-    virtual bool processPayment() = 0;
-    virtual bool validatePayment() = 0;
-};
-```
+### 10. Polymorphism
+- **Virtual functions** in base classes
+- **Overridden methods** in derived classes
+- Runtime polymorphism demonstrated in OOP demo menus
 
-### 6. Static Members
-Shared across all instances for unique ID generation.
+### 11. Operator Overloading
+- `Booking` class overloads the `==` operator
+- Allows comparing two bookings by their PNR number
 
-```cpp
-class Booking {
-private:
-    static int bookingCounter;
-public:
-    string generatePNR();  // PNR001, PNR002, etc.
-};
-```
+### 12. Friend Functions
+- `showLoyaltyPointsUsed()` is a friend of `LoyaltyPayment`
+- Accesses private `pointsUsed` member directly
+- Demonstrates controlled access to private data
 
-### 7. Dynamic Memory Management
-Proper allocation/deallocation with constructors, destructors, copy operations.
+### 13. Abstraction
+- Complex operations hidden inside class methods
+- Simple public interfaces for users of the classes
+
+### 14. Composition
+- `Flight` **HAS-A** `Seat[]` array (composition)
+- `Flight` **HAS-A** `Booking[]` array (composition)
+- `Airline` **HAS-A** `Flight[]` array (composition)
+- `Booking` **HAS-A** `Passenger` object (composition)
 
 ---
 
-## Usage
+## Class List
 
-### Main Menu
+The system contains **13 classes**:
+
+1. **Passenger** - Stores passenger information (name, age, ID)
+2. **Seat** - Represents one seat on a flight (number, class, availability, price)
+3. **Booking** - Stores one reservation (PNR, passenger, seat, payment)
+4. **Flight** - Represents one flight with seats and bookings
+5. **Airline** - Manages multiple flights
+6. **User** - Base class for all system users
+7. **Admin** - Inherits from User, represents admin users
+8. **Customer** - Inherits from User, represents customer users
+9. **Payment** - Base class for all payment methods
+10. **OnlinePayment** - Inherits from Payment, base for online payments
+11. **CreditCardPayment** - Inherits from OnlinePayment (multi-level)
+12. **CashPayment** - Inherits from Payment, handles cash transactions
+13. **LoyaltyPayment** - Inherits from Payment, handles points redemption
+
+---
+
+## Features
+
+### Main Features:
+1. **View All Flights** - Display all available flights with details
+2. **Search Flights by Route** - Find flights from origin to destination
+3. **Book a Seat** - Complete booking process with payment
+4. **Cancel a Booking** - Cancel using PNR number
+5. **View Booking Details** - Display formatted boarding pass ticket
+6. **View Passenger Manifest** - Show all passengers on a flight
+
+### Payment Methods:
+- **Credit Card Payment** (demonstrates multi-level inheritance)
+- **Cash Payment** (with change calculation)
+- **Loyalty Points Payment** (with friend function demonstration)
+
+### OOP Demonstrations:
+- **Demo 7: User Hierarchy** - Shows polymorphism with Admin and Customer
+- **Demo 8: Payment Methods** - Shows polymorphism with payment types
+
+---
+
+## Sample Data
+
+The system loads 3 sample flights on startup:
+
+1. **PK-301**: Lahore → Karachi (2026-06-01, 10:00-12:00, 18 seats)
+2. **PK-502**: Islamabad → Dubai (2026-06-05, 14:00-17:30, 18 seats)
+3. **PK-786**: Karachi → London (2026-06-10, 22:00-06:00, 18 seats)
+
+Each flight has:
+- **14 Economy seats** (Rs. 5,000 each)
+- **4 Business seats** (Rs. 12,000 each)
+
+---
+
+## Usage Example
 
 ```
 ==========================================
@@ -197,231 +195,102 @@ Proper allocation/deallocation with constructors, destructors, copy operations.
   1. View All Flights
   2. Search Flights by Route
   3. Book a Seat
-  4. Cancel Booking
-  5. View Booking Details
-  6. Display Flight Manifest
-  7. Test User Hierarchy (Admin/Customer)
-  8. Test Payment Methods
+  4. Cancel a Booking
+  5. View Booking Details (Ticket)
+  6. View Passenger Manifest
+  7. Demo: User Hierarchy (OOP)
+  8. Demo: Payment Methods (OOP)
   0. Exit
+==========================================
+Enter your choice : 3
+
+==========================================
+  BOOK A SEAT
+==========================================
+Enter flight number (e.g. PK-301) : PK-301
+Enter passenger full name : Ali Ahmed
+Enter passenger age       : 28
+Enter passenger ID / Passport : PK-1234567
+Enter seat class (economy / business) : economy
+
+Payment Method:
+  1. Credit Card
+  2. Cash
+  3. Loyalty Points
+Enter your choice (1-3) : 2
+
+Cash payment of Rs.5000 received.
+Change returned: Rs.500.
+
+==========================================
+  BOOKING CONFIRMED
+==========================================
+  PNR Number  : PNR001
+  Seat Number : 1
+  Seat Class  : Economy
+  Amount Paid : Rs.5000
+  SAVE YOUR PNR NUMBER FOR FUTURE USE!
 ==========================================
 ```
 
-### Sample Flights
-
-**Flight PK-301:** Lahore → Karachi (June 1, 2025, 10:00-12:00)  
-**Flight PK-502:** Islamabad → Dubai (June 5, 2025, 14:00-17:00)
-
-Each flight: 50 seats (33 Economy, 17 Business)
-
-### Booking Example
-
-```
-Enter flight number: PK-301
-Enter passenger name: John Doe
-Enter passenger age: 30
-Enter passport ID: AB123456
-Choose seat class (Economy/Business): Economy
-
-Select payment method:
-1. Credit Card
-2. Cash
-3. Loyalty Points
-
-Booking successful! Your PNR: PNR001
-```
-
-### Ticket Format
-
-```
-+------------------------------------------+
-|          BOARDING PASS / TICKET          |
-+------------------------------------------+
-|  PNR Number   : PNR001                   |
-|  Passenger    : John Doe                 |
-|  Flight       : PK-301                   |
-|  From         : Lahore                   |
-|  To           : Karachi                  |
-|  Date         : 2025-06-01               |
-|  Seat Number  : 5                        |
-|  Seat Class   : Economy                  |
-|  Amount Paid  : $150.00                  |
-+------------------------------------------+
-```
-
 ---
 
-## Code Standards
+## Code Quality Standards
 
-### Documentation
-- Every line commented for educational clarity
-- Class-level comments explain OOP concepts
-- Method-level comments describe functionality
+This project follows strict coding standards for educational purposes:
 
-### Naming Conventions
-- **camelCase** - variables and methods
-- **PascalCase** - class names
-- **UPPER_CASE** - constants
-- Full English names (no abbreviations)
-
-### Syntax Simplicity
-- One operation per line
-- No ternary operators
-- No nested function calls
-- Clear boolean variables
-- Simple loops only
-
-### Memory Management
-- No memory leaks
-- Proper destructors
-- Copy constructors and assignment operators
-- RAII principles
-
----
-
-## Testing
-
-### Run Tests
-
-```bash
-make test
-```
-
-### Test Coverage
-- Admin/Customer object creation
-- Polymorphism with base class pointers
-- Virtual method dispatch
-- Admin-specific methods
-- Customer loyalty system
-- Payment method validation
-
-### Memory Testing
-
-```bash
-valgrind --leak-check=full ./bin/airline
-```
-
----
-
-## Technical Specifications
-
-**Language:** C++11  
-**Compiler:** g++ (GCC)  
-**Headers:** `<iostream>`, `<string>`, `<iomanip>` only
-
-### System Limits
-- Maximum flights per airline: 10
-- Maximum seats per flight: 50
-- Maximum bookings per flight: 50
-- Seat classes: Economy, Business
-- Payment methods: Credit Card, Cash, Loyalty Points
-
-### Membership Tiers
-- **Bronze:** 0-1,999 points
-- **Silver:** 2,000-4,999 points
-- **Gold:** 5,000-9,999 points
-- **Platinum:** 10,000+ points
-
----
-
-## Known Limitations
-
-Intentional for educational purposes:
-
-1. In-memory only (no persistence)
-2. Single airline management
-3. Fixed capacities
-4. No date validation
-5. Simplified payment (no gateway)
-6. Automatic seat assignment (no visual map)
-7. No timezone handling
-8. No email notifications
-9. Single-threaded
-10. No network support
-
----
-
-## Future Enhancements
-
-### Persistence
-- File I/O for data storage
-- SQLite database integration
-- JSON/XML serialization
-
-### Advanced Features
-- Multi-airline support
-- Visual seat map
-- Flight scheduling with timezones
-- Email/SMS notifications
-- Discount codes
-- Analytics dashboard
-
-### Architecture
-- Multi-threading for concurrent bookings
-- Client-server architecture
-- RESTful API
-- Microservices design
+✅ **Every line has a comment** explaining what it does  
+✅ **No abbreviations** - all variable names are full English words  
+✅ **No pointers** except where absolutely necessary  
+✅ **No dynamic memory** - all objects on the stack  
+✅ **Fixed array sizes** defined as constants  
+✅ **Input validation** on all user inputs  
+✅ **Clean terminal output** with separators and formatting  
+✅ **Beginner-friendly syntax** - no complex expressions  
 
 ---
 
 ## Learning Objectives
 
-Students will learn:
+After studying this project, you will understand:
 
-1. Class hierarchy design
-2. Composition vs inheritance
-3. Polymorphism implementation
-4. Abstract interface design
-5. Static member usage
-6. Constructor overloading
-7. Dynamic memory management
-8. Copy constructors and assignment operators
-9. Virtual and pure virtual methods
-10. Modular code organization
-11. Build automation with Make
-12. Clean code documentation
-13. Application testing and debugging
+- How to design classes for real-world entities
+- How to implement encapsulation with private data and public methods
+- How to use inheritance to create class hierarchies
+- How to implement polymorphism with virtual functions
+- How to overload operators for custom behavior
+- How to use friend functions for controlled access
+- How to manage relationships between classes (composition)
+- How to use static members for class-level data
+- How to write clean, commented, beginner-friendly code
 
 ---
 
-## Contributing
+## Project Constraints
 
-Contributions welcome for:
-- Bug fixes
-- Code improvements
-- Documentation enhancements
-- Additional test cases
-- New features (learning exercises)
+This project intentionally follows these constraints for educational purposes:
 
-### Guidelines
-1. Fork repository
-2. Create feature branch
-3. Follow existing code standards
-4. Add comments to every line
-5. Test thoroughly
-6. Submit pull request
+- **Only 3 headers allowed**: `<iostream>`, `<string>`, `<cstring>`
+- **No STL containers**: No vectors, maps, lists, etc.
+- **No dynamic memory**: No `new` or `delete` keywords
+- **Fixed arrays only**: All collections use plain C++ arrays
+- **No external libraries**: Pure standard C++ only
+- **Exactly 4 files**: main.cpp, classes.h, helpers.h, README.md
+
+---
+
+## Author
+
+OOP Project - Airline Reservation System  
+Created for educational purposes to demonstrate C++ OOP concepts  
+Date: 2026-05-05
 
 ---
 
 ## License
 
-Educational project for learning purposes.
-
-**Educational Use:** ✅ Allowed  
-**Commercial Use:** ❌ Not intended  
-**Modification:** ✅ Encouraged  
-**Distribution:** ✅ Allowed with attribution
+This is an educational project. Feel free to use it for learning purposes.
 
 ---
 
-## Support
-
-For questions or issues:
-1. Check `docs/` directory
-2. Review code comments (every line documented)
-3. Run test program
-4. Experiment and learn by doing
-
----
-
-*Last Updated: April 23, 2026*  
-*Version: 1.1.0*
+**End of README**
