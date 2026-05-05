@@ -49,8 +49,17 @@ int main()
     // Create the main Airline object using the parameterized constructor
     Airline airline("Pakistan International Airlines", "PIA"); // creates airline with name and code
 
-    // Load sample flights so the user can test features immediately
-    airline.loadSampleData(); // adds 3 pre-built flights to the airline
+    // Try to load saved data from file, if file doesn't exist load sample data instead
+    try // starts exception handling block for file loading
+    {
+        airline.loadFromFile("airline_data.txt"); // attempts to load data from file
+        cout << "Previous session data loaded successfully." << endl; // confirms loading
+    }
+    catch (FileIOException& fileError) // catches file-related errors
+    {
+        cout << "No saved data found. Loading sample flights..." << endl; // informs user of fallback
+        airline.loadSampleData(); // loads the default sample flights
+    }
 
     cout << endl; // blank line for spacing
     printSeparator();                                    // top border
@@ -103,17 +112,30 @@ int main()
         {
             displayFlightManifest(airline); // calls the helper function for manifest
         }
-        else if (menuChoice == 7) // user wants to see the User hierarchy OOP demo
+        else if (menuChoice == 7) // user wants to view user profiles
         {
-            demoUserHierarchy(); // calls the helper function to demonstrate OOP concepts
+            displayUserProfiles(); // calls the helper function to show user account information
         }
-        else if (menuChoice == 8) // user wants to see the Payment methods OOP demo
+        else if (menuChoice == 8) // user wants to view payment options
         {
-            demoPaymentMethods(); // calls the helper function to demonstrate OOP concepts
+            displayPaymentOptions(); // calls the helper function to show payment processing demo
         }
         else if (menuChoice == 0) // user wants to exit the program
         {
             keepRunning = false; // sets the flag to false so the loop will end
+
+            // Save all flight and booking data to file before exiting
+            try // starts exception handling block for file saving
+            {
+                airline.saveToFile("airline_data.txt"); // saves all data to file
+                cout << endl; // blank line for spacing
+                cout << "Data saved successfully." << endl; // confirms save operation
+            }
+            catch (FileIOException& fileError) // catches file-related errors
+            {
+                fileError.displayError(); // shows the error message to user
+                cout << "Warning: Data was not saved." << endl; // warns user about data loss
+            }
 
             cout << endl; // blank line for spacing
             printSeparator();                                // top border

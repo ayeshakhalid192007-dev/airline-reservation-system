@@ -49,12 +49,13 @@ airline.exe
 
 ## File Structure
 
-The project consists of **exactly 4 files** as per the project requirements:
+The project consists of **exactly 4 source files** plus 1 data file:
 
 1. **main.cpp** - Entry point containing only the main() function and includes
-2. **classes.h** - All 13 class definitions and implementations
-3. **helpers.h** - All helper functions for menus and operations
+2. **classes.h** - All 13 classes plus 8 exception classes
+3. **helpers.h** - All helper functions with exception handling
 4. **README.md** - This documentation file
+5. **airline_data.txt** - Auto-generated data file (created on first exit)
 
 ---
 
@@ -129,12 +130,26 @@ This project demonstrates **all major OOP concepts** required for an intermediat
 - `Airline` **HAS-A** `Flight[]` array (composition)
 - `Booking` **HAS-A** `Passenger` object (composition)
 
+### 15. Exception Handling
+- Custom exception class hierarchy (AirlineException base class)
+- 7 derived exception classes for specific error types
+- Try-catch blocks protecting all critical operations
+- Graceful error handling with clear user messages
+
+### 16. File Handling
+- Data persistence using fstream (file input/output)
+- Saves all flight, seat, and booking data to text file
+- Loads data on program startup
+- Booking counter persists across program runs
+- Graceful fallback to sample data if file missing
+
 ---
 
 ## Class List
 
-The system contains **13 classes**:
+The system contains **13 main classes** plus **8 exception classes**:
 
+### Main Classes:
 1. **Passenger** - Stores passenger information (name, age, ID)
 2. **Seat** - Represents one seat on a flight (number, class, availability, price)
 3. **Booking** - Stores one reservation (PNR, passenger, seat, payment)
@@ -148,6 +163,16 @@ The system contains **13 classes**:
 11. **CreditCardPayment** - Inherits from OnlinePayment (multi-level)
 12. **CashPayment** - Inherits from Payment, handles cash transactions
 13. **LoyaltyPayment** - Inherits from Payment, handles points redemption
+
+### Exception Classes:
+1. **AirlineException** - Base exception class for all errors
+2. **InputException** - Invalid user input errors
+3. **FlightNotFoundException** - Flight not found errors
+4. **SeatUnavailableException** - No seats available errors
+5. **BookingNotFoundException** - Booking/PNR not found errors
+6. **ArrayFullException** - Array capacity reached errors
+7. **FileIOException** - File read/write errors
+8. **PaymentException** - Payment validation/processing errors
 
 ---
 
@@ -166,9 +191,21 @@ The system contains **13 classes**:
 - **Cash Payment** (with change calculation)
 - **Loyalty Points Payment** (with friend function demonstration)
 
-### OOP Demonstrations:
-- **Demo 7: User Hierarchy** - Shows polymorphism with Admin and Customer
-- **Demo 8: Payment Methods** - Shows polymorphism with payment types
+### Data Persistence:
+- **Auto-save on Exit** - All data saved to airline_data.txt
+- **Auto-load on Startup** - Previous session data restored
+- **Persistent PNR Numbers** - Booking counter never resets
+- **Graceful Fallback** - Loads sample data if file missing
+
+### Exception Handling:
+- **Input Validation** - All user inputs protected with exceptions
+- **Error Recovery** - Program never crashes on bad input
+- **Clear Error Messages** - Every error displays helpful message
+- **File Error Handling** - Graceful handling of file I/O errors
+
+### Additional Features:
+- **View User Profiles** - Display sample admin and customer account information
+- **View Payment Options** - Demonstration of different payment processing methods
 
 ---
 
@@ -262,6 +299,8 @@ After studying this project, you will understand:
 - How to use friend functions for controlled access
 - How to manage relationships between classes (composition)
 - How to use static members for class-level data
+- How to implement exception handling with custom exception classes
+- How to implement file I/O for data persistence
 - How to write clean, commented, beginner-friendly code
 
 ---
@@ -270,12 +309,13 @@ After studying this project, you will understand:
 
 This project intentionally follows these constraints for educational purposes:
 
-- **Only 3 headers allowed**: `<iostream>`, `<string>`, `<cstring>`
+- **Only 4 headers allowed**: `<iostream>`, `<string>`, `<cstring>`, `<fstream>`
 - **No STL containers**: No vectors, maps, lists, etc.
 - **No dynamic memory**: No `new` or `delete` keywords
 - **Fixed arrays only**: All collections use plain C++ arrays
 - **No external libraries**: Pure standard C++ only
-- **Exactly 4 files**: main.cpp, classes.h, helpers.h, README.md
+- **Exactly 4 source files**: main.cpp, classes.h, helpers.h, README.md
+- **1 data file**: airline_data.txt (auto-generated)
 
 ---
 

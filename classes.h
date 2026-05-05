@@ -14,6 +14,7 @@
 #include <iostream>  // for cout and cin
 #include <string>    // for string data type
 #include <cstring>   // for string helper functions
+#include <fstream>   // for file input and output operations
 
 using namespace std; // allows use of cout, cin, string without std:: prefix
 
@@ -30,6 +31,132 @@ const double BUSINESS_PRICE = 12000.0; // price for business class seat in rupee
 
 const int ECONOMY_SEAT_LIMIT = 14; // seats 1 to 14 are economy class
 // seats 15 to 20 are business class
+
+// =============================================================
+// EXCEPTION CLASSES - for error handling throughout the system
+// =============================================================
+
+// Base Exception Class - parent class for all airline exceptions
+class AirlineException
+{
+private: // private data members
+    string errorMessage; // stores the error message text
+    int    errorCode;    // stores the numeric error code
+
+public: // public interface
+
+    // Constructor - creates an exception with a message and code
+    AirlineException(string message, int code)
+    {
+        errorMessage = message; // stores the error message
+        errorCode    = code;    // stores the error code
+    }
+
+    // Getter - returns the error message
+    string getErrorMessage()
+    {
+        return errorMessage; // returns the private error message
+    }
+
+    // Getter - returns the error code
+    int getErrorCode()
+    {
+        return errorCode; // returns the private error code
+    }
+
+    // Display method - prints formatted error message to screen
+    void displayError()
+    {
+        cout << "==========================================" << endl; // top border
+        cout << "  ERROR [Code " << errorCode << "]" << endl;        // shows error code
+        cout << "  " << errorMessage << endl;                        // shows error message
+        cout << "==========================================" << endl; // bottom border
+    }
+};
+
+// InputException - thrown when user input is invalid
+class InputException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates an input exception
+    InputException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
+
+// FlightNotFoundException - thrown when a flight number is not found
+class FlightNotFoundException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates a flight not found exception
+    FlightNotFoundException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
+
+// SeatUnavailableException - thrown when no seats of requested class are available
+class SeatUnavailableException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates a seat unavailable exception
+    SeatUnavailableException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
+
+// BookingNotFoundException - thrown when a PNR is not found
+class BookingNotFoundException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates a booking not found exception
+    BookingNotFoundException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
+
+// ArrayFullException - thrown when flight or booking arrays reach maximum capacity
+class ArrayFullException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates an array full exception
+    ArrayFullException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
+
+// FileIOException - thrown when file read or write operations fail
+class FileIOException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates a file I/O exception
+    FileIOException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
+
+// PaymentException - thrown when payment validation or processing fails
+class PaymentException : public AirlineException
+{
+public: // public interface
+
+    // Constructor - creates a payment exception
+    PaymentException(string message, int code) : AirlineException(message, code)
+    {
+        // calls base class constructor to store message and code
+    }
+};
 
 // =============================================================
 // CLASS 1: Passenger
@@ -72,6 +199,19 @@ public: // public methods - accessible from outside the class
         passengerName = other.passengerName; // copies the name from the other object
         passengerAge  = other.passengerAge;  // copies the age from the other object
         passengerId   = other.passengerId;   // copies the ID from the other object
+    }
+
+    // Assignment Operator - assigns values from another Passenger object
+    // Prevents compiler deprecation warnings when copy constructor is defined
+    Passenger& operator=(const Passenger& other)
+    {
+        if (this != &other) // checks if not assigning to itself
+        {
+            passengerName = other.passengerName; // copies the name from the other object
+            passengerAge  = other.passengerAge;  // copies the age from the other object
+            passengerId   = other.passengerId;   // copies the ID from the other object
+        }
+        return *this; // returns reference to this object for chaining
     }
 
     // Getter method - returns the passenger name
@@ -299,12 +439,44 @@ public: // public interface
         pnr = "PNR" + counterText; // combines the prefix with the counter text
     }
 
+    // Copy Constructor - creates a new Booking object by copying another Booking
+    // This is needed when passing Booking objects by value or returning them from functions
+    Booking(const Booking& other)
+    {
+        pnr          = other.pnr;          // copies the PNR
+        passenger    = other.passenger;    // copies the passenger information
+        flightNumber = other.flightNumber; // copies the flight number
+        seatNumber   = other.seatNumber;   // copies the seat number
+        seatClass    = other.seatClass;    // copies the seat class
+        amountPaid   = other.amountPaid;   // copies the amount paid
+        bookingDate  = other.bookingDate;  // copies the booking date
+        status       = other.status;       // copies the status
+    }
+
     // Operator Overloading - == compares two bookings by their PNR number
     // This makes it easy to check if two bookings are the same booking
     bool operator==(const Booking& other)
     {
         bool samePnr = (pnr == other.pnr); // checks if both bookings have the same PNR
         return samePnr;                     // returns true if they are the same booking
+    }
+
+    // Assignment Operator - assigns values from another Booking object
+    // Prevents compiler deprecation warnings when copy constructor is defined
+    Booking& operator=(const Booking& other)
+    {
+        if (this != &other) // checks if not assigning to itself
+        {
+            pnr          = other.pnr;          // copies the PNR
+            passenger    = other.passenger;    // copies the passenger information
+            flightNumber = other.flightNumber; // copies the flight number
+            seatNumber   = other.seatNumber;   // copies the seat number
+            seatClass    = other.seatClass;    // copies the seat class
+            amountPaid   = other.amountPaid;   // copies the amount paid
+            bookingDate  = other.bookingDate;  // copies the booking date
+            status       = other.status;       // copies the status
+        }
+        return *this; // returns reference to this object for chaining
     }
 
     // Getter - returns the PNR reference number
@@ -365,6 +537,12 @@ public: // public interface
     static int getBookingCounter()
     {
         return bookingCounter; // returns the shared static counter value
+    }
+
+    // Static Setter - sets the booking counter value (used when loading from file)
+    static void setBookingCounter(int value)
+    {
+        bookingCounter = value; // assigns the counter to the provided value
     }
 
     // Display - prints a short summary of this booking on one line
@@ -510,6 +688,39 @@ public: // public interface
         {
             bookings[bookIndex] = other.bookings[bookIndex]; // copies each booking object
         }
+    }
+
+    // Assignment Operator - assigns values from another Flight object
+    // Prevents compiler deprecation warnings when copy constructor is defined
+    Flight& operator=(const Flight& other)
+    {
+        if (this != &other) // checks if not assigning to itself
+        {
+            flightNumber   = other.flightNumber;   // copies the flight number
+            origin         = other.origin;         // copies the origin city
+            destination    = other.destination;    // copies the destination city
+            departureDate  = other.departureDate;  // copies the departure date
+            departureTime  = other.departureTime;  // copies the departure time
+            arrivalTime    = other.arrivalTime;    // copies the arrival time
+            totalSeats     = other.totalSeats;     // copies the total seat count
+            availableSeats = other.availableSeats; // copies the available seat count
+            bookingCount   = other.bookingCount;   // copies the current booking count
+
+            int seatIndex = 0; // loop counter for copying seats
+
+            for (seatIndex = 0; seatIndex < MAX_SEATS; seatIndex = seatIndex + 1) // copies all seats
+            {
+                seats[seatIndex] = other.seats[seatIndex]; // copies each seat object
+            }
+
+            int bookIndex = 0; // loop counter for copying bookings
+
+            for (bookIndex = 0; bookIndex < MAX_BOOKINGS; bookIndex = bookIndex + 1) // copies all bookings
+            {
+                bookings[bookIndex] = other.bookings[bookIndex]; // copies each booking object
+            }
+        }
+        return *this; // returns reference to this object for chaining
     }
 
     // Finds the first available seat of the requested class and returns its number
@@ -730,6 +941,13 @@ public: // public interface
     {
         return bookings[index]; // returns the booking stored at the given index
     }
+
+    // Getter - returns a reference to the Seat object at a specific index position
+    // Allows external code to access individual seats for file I/O operations
+    Seat& getSeatAt(int index)
+    {
+        return seats[index]; // returns reference to the seat stored at the given index
+    }
 };
 
 // =============================================================
@@ -877,6 +1095,293 @@ public: // public interface
         addFlight(thirdFlight); // adds the third flight to the airline
 
         cout << "Sample data loaded: 3 flights added to " << airlineName << "." << endl; // confirms loading
+    }
+
+    // Saves all airline data to a file for persistence across program runs
+    void saveToFile(string filename)
+    {
+        ofstream outputFile; // creates an output file stream object
+        outputFile.open(filename); // opens the file for writing
+
+        bool fileOpenFailed = !outputFile.is_open(); // checks if file failed to open
+
+        if (fileOpenFailed) // if file could not be opened
+        {
+            throw FileIOException("Cannot open file for writing: " + filename, 601); // throws exception
+        }
+
+        // Save the booking counter first so PNR numbers continue correctly
+        int currentCounter = Booking::getBookingCounter(); // gets the current counter value
+        outputFile << "COUNTER:" << currentCounter << endl; // writes counter to file
+
+        // Save the number of flights
+        outputFile << "FLIGHTS:" << flightCount << endl; // writes flight count to file
+
+        // Loop through each flight and save all its data
+        int flightIndex = 0; // loop counter starting at zero
+
+        for (flightIndex = 0; flightIndex < flightCount; flightIndex = flightIndex + 1) // loops through all flights
+        {
+            Flight currentFlight = flights[flightIndex]; // gets the current flight
+
+            // Write flight details line
+            outputFile << "FLIGHT:" << currentFlight.getFlightNumber() << "|"; // writes flight number
+            outputFile << currentFlight.getOrigin() << "|"; // writes origin city
+            outputFile << currentFlight.getDestination() << "|"; // writes destination city
+            outputFile << currentFlight.getDepartureDate() << "|"; // writes departure date
+            outputFile << currentFlight.getDepartureTime() << "|"; // writes departure time
+            outputFile << currentFlight.getArrivalTime() << "|"; // writes arrival time
+            outputFile << currentFlight.getTotalSeats() << "|"; // writes total seats
+            outputFile << currentFlight.getAvailableSeats() << endl; // writes available seats
+
+            // Save all seats for this flight
+            int seatIndex = 0; // loop counter for seats
+
+            for (seatIndex = 0; seatIndex < currentFlight.getTotalSeats(); seatIndex = seatIndex + 1) // loops through seats
+            {
+                Seat currentSeat = currentFlight.getSeatAt(seatIndex); // gets the seat at this index
+
+                int availableFlag = 0; // will store 0 or 1 for availability
+
+                if (currentSeat.getIsAvailable()) // if seat is available
+                {
+                    availableFlag = 1; // sets flag to 1
+                }
+                else // seat is taken
+                {
+                    availableFlag = 0; // sets flag to 0
+                }
+
+                outputFile << "SEAT:" << currentSeat.getSeatNumber() << "|"; // writes seat number
+                outputFile << currentSeat.getSeatClass() << "|"; // writes seat class
+                outputFile << availableFlag << "|"; // writes availability flag
+                outputFile << currentSeat.getBasePrice() << endl; // writes seat price
+            }
+
+            // Save all bookings for this flight
+            int bookingIndex = 0; // loop counter for bookings
+
+            for (bookingIndex = 0; bookingIndex < currentFlight.getBookingCount(); bookingIndex = bookingIndex + 1) // loops through bookings
+            {
+                Booking currentBooking = currentFlight.getBookingAt(bookingIndex); // gets the booking at this index
+                Passenger currentPassenger = currentBooking.getPassenger(); // gets the passenger from booking
+
+                outputFile << "BOOKING:" << currentBooking.getPnr() << "|"; // writes PNR
+                outputFile << currentPassenger.getName() << "|"; // writes passenger name
+                outputFile << currentPassenger.getAge() << "|"; // writes passenger age
+                outputFile << currentPassenger.getId() << "|"; // writes passenger ID
+                outputFile << currentBooking.getFlightNumber() << "|"; // writes flight number
+                outputFile << currentBooking.getSeatNumber() << "|"; // writes seat number
+                outputFile << currentBooking.getSeatClass() << "|"; // writes seat class
+                outputFile << currentBooking.getAmountPaid() << "|"; // writes amount paid
+                outputFile << currentBooking.getBookingDate() << "|"; // writes booking date
+                outputFile << currentBooking.getStatus() << endl; // writes booking status
+            }
+        }
+
+        outputFile.close(); // closes the file after writing all data
+    }
+
+    // Loads all airline data from a file to restore previous session
+    void loadFromFile(string filename)
+    {
+        ifstream inputFile; // creates an input file stream object
+        inputFile.open(filename); // opens the file for reading
+
+        bool fileDoesNotExist = !inputFile.is_open(); // checks if file failed to open
+
+        if (fileDoesNotExist) // if file does not exist
+        {
+            throw FileIOException("File not found: " + filename, 602); // throws exception
+        }
+
+        string currentLine = ""; // will store each line read from file
+
+        // Read the booking counter line
+        getline(inputFile, currentLine); // reads the first line
+
+        int colonPosition = currentLine.find(':'); // finds the colon position
+        string counterText = currentLine.substr(colonPosition + 1); // extracts the number part
+        int savedCounter = stoi(counterText); // converts string to integer
+
+        Booking::setBookingCounter(savedCounter); // restores the booking counter
+
+        // Read the flight count line
+        getline(inputFile, currentLine); // reads the second line
+
+        colonPosition = currentLine.find(':'); // finds the colon position
+        string flightCountText = currentLine.substr(colonPosition + 1); // extracts the number part
+        int savedFlightCount = stoi(flightCountText); // converts string to integer
+
+        // Loop through each flight and load its data
+        int flightIndex = 0; // loop counter starting at zero
+
+        for (flightIndex = 0; flightIndex < savedFlightCount; flightIndex = flightIndex + 1) // loops through flights
+        {
+            // Read flight details line
+            getline(inputFile, currentLine); // reads the FLIGHT line
+
+            int startPosition = currentLine.find(':') + 1; // finds start of data after FLIGHT:
+            string flightData = currentLine.substr(startPosition); // extracts the flight data
+
+            // Parse flight data by splitting on pipe character
+            string flightNumber = ""; // will store flight number
+            string origin = ""; // will store origin city
+            string destination = ""; // will store destination city
+            string departureDate = ""; // will store departure date
+            string departureTime = ""; // will store departure time
+            string arrivalTime = ""; // will store arrival time
+            int totalSeats = 0; // will store total seats
+
+            int pipePosition = 0; // will track position of pipe character
+
+            pipePosition = flightData.find('|'); // finds first pipe
+            flightNumber = flightData.substr(0, pipePosition); // extracts flight number
+            flightData = flightData.substr(pipePosition + 1); // removes processed part
+
+            pipePosition = flightData.find('|'); // finds next pipe
+            origin = flightData.substr(0, pipePosition); // extracts origin
+            flightData = flightData.substr(pipePosition + 1); // removes processed part
+
+            pipePosition = flightData.find('|'); // finds next pipe
+            destination = flightData.substr(0, pipePosition); // extracts destination
+            flightData = flightData.substr(pipePosition + 1); // removes processed part
+
+            pipePosition = flightData.find('|'); // finds next pipe
+            departureDate = flightData.substr(0, pipePosition); // extracts departure date
+            flightData = flightData.substr(pipePosition + 1); // removes processed part
+
+            pipePosition = flightData.find('|'); // finds next pipe
+            departureTime = flightData.substr(0, pipePosition); // extracts departure time
+            flightData = flightData.substr(pipePosition + 1); // removes processed part
+
+            pipePosition = flightData.find('|'); // finds next pipe
+            arrivalTime = flightData.substr(0, pipePosition); // extracts arrival time
+            flightData = flightData.substr(pipePosition + 1); // removes processed part
+
+            pipePosition = flightData.find('|'); // finds next pipe
+            totalSeats = stoi(flightData.substr(0, pipePosition)); // extracts and converts total seats
+
+            // Create the flight object with parsed data
+            Flight loadedFlight(flightNumber, origin, destination, departureDate, departureTime, arrivalTime, totalSeats); // creates flight
+
+            // Read and restore all seats for this flight
+            int seatIndex = 0; // loop counter for seats
+
+            for (seatIndex = 0; seatIndex < totalSeats; seatIndex = seatIndex + 1) // loops through seats
+            {
+                getline(inputFile, currentLine); // reads the SEAT line
+
+                startPosition = currentLine.find(':') + 1; // finds start of data
+                string seatData = currentLine.substr(startPosition); // extracts seat data
+
+                int seatNumber = 0; // will store seat number
+                string seatClass = ""; // will store seat class
+                int availableFlag = 0; // will store availability flag
+                double basePrice = 0.0; // will store base price
+
+                pipePosition = seatData.find('|'); // finds first pipe
+                seatNumber = stoi(seatData.substr(0, pipePosition)); // extracts seat number
+                seatData = seatData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = seatData.find('|'); // finds next pipe
+                seatClass = seatData.substr(0, pipePosition); // extracts seat class
+                seatData = seatData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = seatData.find('|'); // finds next pipe
+                availableFlag = stoi(seatData.substr(0, pipePosition)); // extracts availability flag
+                seatData = seatData.substr(pipePosition + 1); // removes processed part
+
+                basePrice = stod(seatData); // extracts and converts base price
+
+                bool isAvailable = (availableFlag == 1); // converts flag to boolean
+
+                int seatArrayIndex = seatNumber - 1; // converts to zero-based index
+
+                loadedFlight.getSeatAt(seatArrayIndex).setSeatNumber(seatNumber); // sets seat number
+                loadedFlight.getSeatAt(seatArrayIndex).setSeatClass(seatClass); // sets seat class
+                loadedFlight.getSeatAt(seatArrayIndex).setIsAvailable(isAvailable); // sets availability
+                loadedFlight.getSeatAt(seatArrayIndex).setBasePrice(basePrice); // sets base price
+            }
+
+            // Read and restore all bookings for this flight
+            string nextLine = ""; // will peek at next line
+
+            while (getline(inputFile, currentLine)) // reads lines until end of file
+            {
+                bool isBookingLine = (currentLine.find("BOOKING:") == 0); // checks if line starts with BOOKING:
+
+                if (!isBookingLine) // if not a booking line
+                {
+                    inputFile.seekg(-currentLine.length() - 1, ios::cur); // moves file pointer back
+                    break; // exits the booking loop
+                }
+
+                startPosition = currentLine.find(':') + 1; // finds start of data
+                string bookingData = currentLine.substr(startPosition); // extracts booking data
+
+                string pnr = ""; // will store PNR
+                string passengerName = ""; // will store passenger name
+                int passengerAge = 0; // will store passenger age
+                string passengerId = ""; // will store passenger ID
+                string bookingFlightNumber = ""; // will store flight number
+                int seatNumber = 0; // will store seat number
+                string seatClass = ""; // will store seat class
+                double amountPaid = 0.0; // will store amount paid
+                string bookingDate = ""; // will store booking date
+                string status = ""; // will store booking status
+
+                pipePosition = bookingData.find('|'); // finds first pipe
+                pnr = bookingData.substr(0, pipePosition); // extracts PNR
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                passengerName = bookingData.substr(0, pipePosition); // extracts passenger name
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                passengerAge = stoi(bookingData.substr(0, pipePosition)); // extracts passenger age
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                passengerId = bookingData.substr(0, pipePosition); // extracts passenger ID
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                bookingFlightNumber = bookingData.substr(0, pipePosition); // extracts flight number
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                seatNumber = stoi(bookingData.substr(0, pipePosition)); // extracts seat number
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                seatClass = bookingData.substr(0, pipePosition); // extracts seat class
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                amountPaid = stod(bookingData.substr(0, pipePosition)); // extracts amount paid
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                pipePosition = bookingData.find('|'); // finds next pipe
+                bookingDate = bookingData.substr(0, pipePosition); // extracts booking date
+                bookingData = bookingData.substr(pipePosition + 1); // removes processed part
+
+                status = bookingData; // extracts booking status
+
+                // Recreate the passenger and booking objects
+                Passenger loadedPassenger(passengerName, passengerAge, passengerId); // creates passenger
+                Booking loadedBooking(loadedPassenger, bookingFlightNumber, seatNumber, seatClass, amountPaid); // creates booking
+
+                loadedBooking.setStatus(status); // sets the booking status
+
+                loadedFlight.addBooking(loadedBooking); // adds booking to flight
+            }
+
+            addFlight(loadedFlight); // adds the loaded flight to airline
+        }
+
+        inputFile.close(); // closes the file after reading all data
     }
 
     // Getter - returns the airline name
