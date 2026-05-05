@@ -1,8 +1,5 @@
 # CLAUDE.md — C++ OOP Project Guidelines
-# Master Instruction File for Claude CLI
-
 ---
-
 ## SECTION 1: LANGUAGE AND CODING STANDARDS
 
 **Language:** C++ (Pure, Standard Only)
@@ -35,19 +32,13 @@ Claude must follow every rule below — no exceptions.
 - All collections must use plain C++ arrays of fixed size
 - Example: Use `Student students[50]` not `vector<Student> students`
 
-### RULE 3 — STRICT FILE STRUCTURE
-- The project must have EXACTLY these files and no more:
-  - `main.cpp` — contains ONLY the main() function and #include statements
-  - `classes.h` — contains ALL class definitions and implementations
-  - `helpers.h` — contains ALL helper functions (menu functions, utility functions, etc.)
-  - `README.md` — project documentation
-- Never create additional .cpp or .h files beyond classes.h and helpers.h
-- Never write code directly in main.cpp except the main() function
-- Use `#include "classes.h"` and `#include "helpers.h"` in main.cpp
-- All constants must be defined at the top of classes.h
-- All class definitions and member function implementations go in classes.h
-- All standalone helper functions go in helpers.h
-- Keep main.cpp clean with only: includes, main() function, and the program loop
+### RULE 3 — ORGANIZED FILE STRUCTURE
+- Never write all code directly in `main.cpp`
+- Create separate utility files for different components and import them into main
+- Use `#include "filename.cpp"` to import utility files into main.cpp
+- Organize code into logical utility files (e.g., classes.cpp, helpers.cpp, menu.cpp)
+- The main.cpp file should only contain the main() function and necessary includes
+- Keep the project structure clean and modular while avoiding unnecessary file creation
 
 ### RULE 4 — COMMENT EVERY LINE
 - Every single line of code must have a comment explaining what it does
@@ -86,12 +77,12 @@ Claude must follow every rule below — no exceptions.
 - All menus must be centered and clearly labeled
 - Leave blank lines between sections for readability
 
-### RULE 11 — STRICT FILE LIMIT
-- Create ONLY these files: main.cpp, classes.h, helpers.h, README.md
-- Never create additional .cpp or .h files
-- Never create backup files, temporary files, or documentation files beyond README.md
-- If you need to organize code, use comments to separate sections within classes.h or helpers.h
-- Every file created must be one of the four allowed files
+### RULE 11 — AVOID UNNECESSARY FILES
+- Only create files that are absolutely essential for the project
+- Do not create extra documentation files, notes, or temporary files unless explicitly requested
+- Do not create backup files or duplicate versions
+- Keep the project directory clean with only necessary source files and the README.md
+- Every file created must serve a clear, specific purpose in the project
 
 ### RULE 12 — USE CONTEXT7 FOR AUTHENTIC C++ SYNTAX
 - Before writing any C++ OOP code, query Context7 MCP server for authentic syntax
@@ -102,116 +93,7 @@ Claude must follow every rule below — no exceptions.
 
 ---
 
-## SECTION 3: FILE ORGANIZATION AND STRUCTURE
-
-### FILE STRUCTURE RULE — EXACTLY 4 FILES
-Every project must have exactly these files:
-
-1. **main.cpp** — Contains ONLY:
-   - `#include <iostream>`
-   - `#include <string>`
-   - `#include <cstring>`
-   - `#include "classes.h"`
-   - `#include "helpers.h"`
-   - `int main()` function with the program loop
-   - Nothing else
-
-2. **classes.h** — Contains ONLY:
-   - All constant definitions at the top
-   - All class definitions
-   - All class member function implementations
-   - Static member initializations
-   - Nothing else (no helper functions, no menu code)
-
-3. **helpers.h** — Contains ONLY:
-   - Simple helper functions for menu operations
-   - Simple helper functions for input validation
-   - Simple helper functions for display formatting
-   - Keep each helper function under 20 lines
-   - Each helper function must do ONE specific task
-   - Nothing else (no classes, no complex logic)
-
-4. **README.md** — Project documentation
-
-### HELPER FUNCTIONS RULES
-
-**What goes in helpers.h:**
-- `void displayMenu()` — prints the menu
-- `int getUserChoice()` — gets and validates menu choice
-- `void clearScreen()` — clears the terminal screen
-- `void pauseScreen()` — waits for user to press enter
-- `void printSeparator()` — prints a line of dashes or equals
-- `void displayHeader(string title)` — prints a formatted header
-- Simple input validation functions like `bool isValidAge(int age)`
-- Simple formatting functions like `string formatDate(string date)`
-
-**What does NOT go in helpers.h:**
-- No classes or class definitions
-- No complex business logic
-- No functions longer than 20 lines
-- No functions that do multiple things
-- No global variables
-
-**Helper Function Guidelines:**
-- Each helper function must have a clear, single purpose
-- Function names must be descriptive verbs: `displayMenu()`, `getUserInput()`, `validateAge()`
-- Keep functions simple and straightforward
-- Maximum 20 lines per helper function
-- If a helper function gets longer, break it into smaller helpers
-- Every helper function must have a comment above it explaining what it does
-
-### CODE ORGANIZATION EXAMPLE
-
-**main.cpp structure:**
-```
-#include <iostream>
-#include <string>
-#include <cstring>
-#include "classes.h"
-#include "helpers.h"
-
-using namespace std;
-
-int main()
-{
-    // create main objects
-    // display welcome message
-    // main program loop
-    // display goodbye message
-    return 0;
-}
-```
-
-**classes.h structure:**
-```
-// Constants section
-const int MAX_ITEMS = 100;
-
-// Class 1 definition and implementation
-class ClassName1 { ... };
-
-// Class 2 definition and implementation
-class ClassName2 { ... };
-
-// Static member initializations
-int ClassName::staticMember = 0;
-```
-
-**helpers.h structure:**
-```
-// Menu display helper
-void displayMenu() { ... }
-
-// Input validation helper
-int getUserChoice() { ... }
-
-// Screen formatting helper
-void printSeparator() { ... }
-```
-
----
-
-## SECTION 4: REQUIRED OOP CONCEPTS
+## SECTION 3: REQUIRED OOP CONCEPTS
 
 Every C++ OOP project must demonstrate these concepts:
 
@@ -550,19 +432,7 @@ Rules for documentation:
 
 Must all be true before any project is complete:
 
-**FILE ORGANIZATION:**
-- [ ] Project has EXACTLY 4 files: main.cpp, classes.h, helpers.h, README.md
-- [ ] No additional .cpp or .h files exist
-- [ ] No backup files, temporary files, or extra documentation files exist
-- [ ] main.cpp contains ONLY: includes and main() function
-- [ ] classes.h contains ONLY: constants and class definitions
-- [ ] helpers.h contains ONLY: simple helper functions (each under 20 lines)
-- [ ] All helper functions do ONE specific task
-- [ ] No classes or complex logic in helpers.h
-- [ ] Code compiles cleanly with: `g++ main.cpp -o <program_name>`
-
-**OOP CONCEPTS:**
-- [ ] All required OOP concepts are implemented (see Section 4)
+- [ ] All required OOP concepts are implemented (see Section 3)
 - [ ] Encapsulation is applied in every class (private data, public getters/setters)
 - [ ] At least one class demonstrates constructor overloading
 - [ ] At least one class demonstrates copy constructor
@@ -574,17 +444,19 @@ Must all be true before any project is complete:
 - [ ] At least one class demonstrates polymorphism with virtual functions
 - [ ] At least one class demonstrates operator overloading
 - [ ] At least one class demonstrates friend function
-
-**CODE QUALITY:**
 - [ ] Every line of code has a comment
 - [ ] No variable name is abbreviated or unclear
 - [ ] All user inputs are validated
 - [ ] Program handles invalid input without crashing
+- [ ] Code is organized into proper utility files
+- [ ] main.cpp only contains the main() function and necessary includes
+- [ ] No unnecessary files exist in the project directory
+- [ ] Code compiles cleanly with: `g++ main.cpp -o <program_name>`
+- [ ] Program runs correctly
 - [ ] All syntax simplicity rules are followed
 - [ ] No STL containers are used (only plain arrays)
 - [ ] Only allowed headers are used: iostream, string, cstring
 - [ ] No dynamic memory allocation (no new/delete)
-- [ ] Program runs correctly without crashes
 - [ ] README.md is complete and accurate
 
 ---
